@@ -14,8 +14,9 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: yarn install --check-files --frozen-lockfile
-      - run: yarn build
-      - run: npm publish
+          # Defaults to the user or organization that owns the workflow file
+          scope: "@octocat"
+      - run: yarn
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

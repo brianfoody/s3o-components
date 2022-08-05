@@ -2,22 +2,21 @@ name: npm-build-publish
 on:
   push:
     branches:
-      - master
-
+      - main
 jobs:
   npm-build-publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@main
       # required - sets up auth in the node env
       - name: Set up Node.js
-        uses: actions/setup-node@master
+        uses: actions/setup-node@main
         with:
           node-version: 14.x
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: "https://registry.npmjs.org"
       # optional
-      - run: npm install
+      - run: yarn install
       # optional
       - run: yarn build
         env:
@@ -27,3 +26,6 @@ jobs:
         uses: geeman201/conventional-changelog-npm-publish/@v14
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_DIST_TAG: latest
+          NPM_REGISTRY: registry.npmjs.org
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

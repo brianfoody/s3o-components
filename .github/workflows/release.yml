@@ -30,3 +30,7 @@ jobs:
         run: yarn build
       - name: release
         run: npm publish
+        env:
+          NPM_DIST_TAG: latest
+          NPM_REGISTRY: registry.npmjs.org
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

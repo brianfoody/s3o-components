@@ -1,5 +1,5 @@
 {
-  "name": "s3o-components",
+  "name": "brianfoody-s3o-components",
   "version": "1.0.0",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",

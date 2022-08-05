@@ -35,7 +35,9 @@ export default ({ title, children, size }: Props) => {
           <h3> {title} </h3>
         </div>
 
-        <div style={{ flex: 1 }}>{children}</div>
+        <div style={{ flex: 1, overflow: "scroll", marginBottom: 3 }}>
+          {children}
+        </div>
       </div>
     </BoxComponent>
   );

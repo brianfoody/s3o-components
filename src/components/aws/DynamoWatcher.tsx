@@ -1,7 +1,7 @@
 import React from "react";
 import { Response } from "easy-aws-utils";
 import BaseComponent from "../layout/BaseComponent";
-import { Inspector } from "react-inspector";
+import { Inspector, TableInspector } from "react-inspector";
 
 export type DynamoWatcherProps = {
   size: number[];
@@ -15,7 +15,15 @@ export default ({ size, records, title }: DynamoWatcherProps) => {
         <p>Number of records found: {records.length}</p>
 
         {records.map((r) => {
-          return <Inspector data={{ a: 1 }} />;
+          return (
+            <Inspector
+              // theme="chromeDark"
+              theme="chromeLight"
+              table={false}
+              data={{ a: 3 }}
+              columns={["a"]}
+            />
+          );
         })}
       </div>
     </BaseComponent>

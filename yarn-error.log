@@ -1,0 +1,57 @@
+Arguments: 
+  /Users/brianfoody/.nvm/versions/node/v14.17.3/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js
+
+PATH: 
+  /Users/brianfoody/.poetry/bin:/Users/brianfoody/.pyenv/shims:/Users/brianfoody/.pyenv/bin:/Users/brianfoody/.nvm/versions/node/v14.17.3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/brianfoody/Library/Python/3.8/bin:/Library/Apple/usr/bin:/Users/brianfoody/.poetry/bin:/Users/brianfoody/.pyenv/shims:/Users/brianfoody/.pyenv/bin:/Users/brianfoody/.nvm/versions/node/v14.17.3/bin:/Users/brianfoody/.fig/bin:/Users/brianfoody/.local/bin:/Users/brianfoody/development/flutter/bin:/Users/brianfoody/development/flutter/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.17.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: ENOSPC: no space left on device, copyfile '/Users/brianfoody/Library/Caches/Yarn/v6/npm-@aws-sdk-util-format-url-3.127.0-45e4a361d6d34b6368c8df1ae948886f2043d728-integrity/node_modules/@aws-sdk/util-format-url/CHANGELOG.md' -> '/Users/brianfoody/apps/personal/easyaws/s3o-components/node_modules/@aws-sdk/util-format-url/CHANGELOG.md'
+
+npm manifest: 
+  {
+    "name": "brianfoody-s3o-components",
+    "version": "1.0.1",
+    "main": "lib/index.js",
+    "module": "lib/index.esm.js",
+    "types": "lib/index.d.ts",
+    "license": "MIT",
+    "devDependencies": {
+      "@babel/core": "^7.18.10",
+      "@rollup/plugin-commonjs": "^22.0.2",
+      "@rollup/plugin-node-resolve": "^13.3.0",
+      "@types/react": "^18.0.15",
+      "babel-loader": "^8.2.5",
+      "postcss": "^8.4.14",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "rollup": "^2.77.2",
+      "rollup-plugin-peer-deps-external": "^2.2.4",
+      "rollup-plugin-postcss": "^4.0.2",
+      "rollup-plugin-scss": "^3.0.0",
+      "rollup-plugin-typescript2": "^0.32.1",
+      "sass": "^1.54.3",
+      "typescript": "^4.7.4"
+    },
+    "scripts": {
+      "build": "rollup -c"
+    },
+    "dependencies": {
+      "easy-aws-utils": "^1.0.28",
+      "react-inspector": "^6.0.1"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

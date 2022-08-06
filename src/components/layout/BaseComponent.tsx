@@ -1,9 +1,11 @@
 import React from "react";
-import { BASE_TAB_HGT, BoxComponent } from "../svg/BoxComponent";
+import { BASE_TAB_HGT } from "../svg/BoxComponent";
+import { Rnd } from "react-rnd";
+import { Component } from "../../domain/core";
 
 type Props = {
-  size: number[];
   children: React.ReactNode;
+  component: Component;
   title: string;
 };
 
@@ -13,15 +15,34 @@ const centered = {
   justifyContent: "center",
 };
 
-export default ({ title, children, size }: Props) => {
+export default ({ component: c, title, children }: Props) => {
   return (
-    <BoxComponent size={size}>
+    <Rnd
+      style={{
+        borderColor: "black",
+        borderWidth: 5,
+        borderStyle: "solid",
+        borderRadius: 5,
+      }}
+      size={{ width: c.size[0], height: c.size[1] }}
+      position={{ x: c.location[0] | 0, y: c.location[1] | 0 }}
+      onDragStop={(e, d) => {
+        console.log({ x: d.x, y: d.y });
+      }}
+      onResizeStop={(_e, _direction, ref, _delta, position) => {
+        console.log({
+          width: ref.style.width,
+          height: ref.style.height,
+        });
+      }}
+    >
       <div
         style={{
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
+          overflow: "hidden",
         }}
       >
         <div
@@ -29,6 +50,8 @@ export default ({ title, children, size }: Props) => {
             height: BASE_TAB_HGT,
             width: "100%",
             paddingLeft: 30,
+            borderBottomWidth: 3,
+            borderBottomStyle: "solid",
             ...centered,
           }}
         >
@@ -39,6 +62,6 @@ export default ({ title, children, size }: Props) => {
           {children}
         </div>
       </div>
-    </BoxComponent>
+    </Rnd>
   );
 };

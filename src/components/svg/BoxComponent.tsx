@@ -2,7 +2,6 @@ import * as React from "react";
 import SvgContainer from "./SvgContainer";
 
 type Props = {
-  size: number[];
   children?: React.ReactNode;
 };
 
@@ -13,9 +12,9 @@ export const BASE_TAB_HGT = 40;
  * @param
  * @returns
  */
-export const BoxComponent = ({ size, children }: Props) => {
+export const BoxComponent = ({ children }: Props) => {
   const box = React.useRef<HTMLElement | undefined | null>();
-  const [containerSize, setContainerSize] = React.useState<{
+  const [{ width, height }, setContainerSize] = React.useState<{
     width: number;
     height: number;
   }>({
@@ -36,8 +35,8 @@ export const BoxComponent = ({ size, children }: Props) => {
     <div
       style={{
         position: "relative",
-        width: size[0],
-        height: size[1],
+        width: "100%",
+        height: "100%",
       }}
       ref={(divElm) => (box.current = divElm)}
     >
@@ -45,11 +44,11 @@ export const BoxComponent = ({ size, children }: Props) => {
         <path
           d={`
           M0,10
-          L0,${size[1] - 10}
+          L0,${height - 10}
           a10,10 0 0,0 10,10
-          L${size[0] - 10},${size[1]}
+          L${width - 10},${height}
           a10,10 0 0,0 10,-10
-          L${size[0]},10
+          L${width},10
           a10,10 0 0,0 -10,-10
           L10,0
           a10,10 0 0,0 -10,10
@@ -60,14 +59,14 @@ export const BoxComponent = ({ size, children }: Props) => {
         />
         <line
           x1={0}
-          x2={size[0]}
+          x2={width}
           y1={BASE_TAB_HGT}
           y2={BASE_TAB_HGT}
           stroke="black"
           strokeWidth={2}
         />
       </SvgContainer>
-      <div style={{ position: "absolute", top: 0, left: 0, ...containerSize }}>
+      <div style={{ position: "absolute", top: 0, left: 0, width, height }}>
         {children}
       </div>
     </div>

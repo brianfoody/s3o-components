@@ -1,3 +1,8 @@
+export interface ComponentStatus {
+  playing: boolean;
+  authorisation: "authorized" | "expired";
+  network?: "connected" | "disconnected";
+}
 export interface Component {
   id: string;
   type: "dynamoDbWatcher" | "lambdaWatcher" | "box";

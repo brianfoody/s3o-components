@@ -1,11 +1,10 @@
 import * as React from "react";
+import { BASE_TAB_HGT } from "../layout/BaseComponent";
 import SvgContainer from "./SvgContainer";
 
 type Props = {
   children?: React.ReactNode;
 };
-
-export const BASE_TAB_HGT = 40;
 
 /**
  * A base container for a React component on the canvas.

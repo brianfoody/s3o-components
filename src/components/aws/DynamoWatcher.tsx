@@ -1,10 +1,14 @@
 import React from "react";
 import { Response } from "easy-aws-utils";
-import BaseComponent from "../layout/BaseComponent";
 import { Inspector } from "react-inspector";
 import "./DynamoWatcher.css";
 import { dateToLogStr } from "../../services/DateService";
-import { AwsComponent } from "../../domain/core";
+import { AwsComponent, ComponentStatus } from "../../domain/core";
+import BaseAwsComponent from "../layout/BaseAwsComponent";
+// @ts-ignore
+// import lambdaIcon from "aws-svg-icons/lib/Architecture-Service-Icons_07302021/Arch_Compute/64/Arch_AWS-Lambda_64.svg";
+import dynamoIcon from "aws-svg-icons/lib/Architecture-Service-Icons_07302021/Arch_Database/64/Arch_Amazon-DynamoDB_64.svg";
+import { centeredRow } from "../../utils/layoutUtils";
 
 export type DynamoWatcherComponent = AwsComponent<{
   tableName: string;
@@ -13,6 +17,7 @@ export type DynamoWatcherComponent = AwsComponent<{
 export type DynamoWatcherProps = {
   records: Response[];
   component: DynamoWatcherComponent;
+  status: ComponentStatus;
 };
 
 const toSentenceCase = (str: string) => {
@@ -20,15 +25,14 @@ const toSentenceCase = (str: string) => {
 };
 export default ({ component: c, records }: DynamoWatcherProps) => {
   return (
-    <BaseComponent title={c.props.tableName} component={c}>
-      <div style={{ paddingTop: 0 }}>
+    <BaseAwsComponent title={c.props.tableName} component={c} icon={dynamoIcon}>
+      <div style={{ paddingTop: 0, flex: 1 }}>
         {records.map((r, i) => {
           return (
             <div
               key={`${c.props.tableName}-${c.config.accountId}-${i}`}
               style={{
                 padding: 8,
-                display: "flex",
                 flexDirection: "row",
                 borderRightWidth: 0,
                 borderLeftWidth: 0,
@@ -36,12 +40,14 @@ export default ({ component: c, records }: DynamoWatcherProps) => {
                 borderBottomWidth: 1,
                 borderStyle: "dotted",
                 borderColor: "lightgray",
+                ...centeredRow,
               }}
             >
               <p style={{ color: "gray" }}>{dateToLogStr(r.at)}</p>
               <p style={{ width: 70, paddingLeft: 20 }}>
                 {toSentenceCase(r.type)}
               </p>
+
               <Inspector
                 // theme="chromeDark"
                 theme="chromeLight"
@@ -53,6 +59,6 @@ export default ({ component: c, records }: DynamoWatcherProps) => {
           );
         })}
       </div>
-    </BaseComponent>
+    </BaseAwsComponent>
   );
 };

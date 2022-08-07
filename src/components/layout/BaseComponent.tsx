@@ -1,26 +1,39 @@
 import React from "react";
-import { BASE_TAB_HGT } from "../svg/BoxComponent";
 import { Rnd } from "react-rnd";
-import { Component } from "../../domain/core";
+import { Component, ComponentStatus } from "../../domain/core";
+import {
+  TbPlugConnected,
+  TbPlugConnectedX,
+  TbPlayerPlay,
+  TbPlayerPause,
+} from "react-icons/tb";
+import { centered, centeredRow, spacedRow } from "../../utils/layoutUtils";
+import "../../base.css";
 
-type Props = {
+export const BASE_TAB_HGT = 40;
+export const BASE_FOOTER_HGT = 20;
+
+export type BaseComponentProps = {
   children: React.ReactNode;
   component: Component;
+  status: ComponentStatus;
   title: string;
+  footer?: React.ReactNode;
+  icon?: any;
 };
 
-const centered = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-export default ({ component: c, title, children }: Props) => {
+export default ({
+  component: c,
+  title,
+  children,
+  footer,
+  icon,
+}: BaseComponentProps) => {
   return (
     <Rnd
       style={{
         borderColor: "black",
-        borderWidth: 5,
+        borderWidth: 3,
         borderStyle: "solid",
         borderRadius: 5,
       }}
@@ -49,18 +62,35 @@ export default ({ component: c, title, children }: Props) => {
           style={{
             height: BASE_TAB_HGT,
             width: "100%",
-            paddingLeft: 30,
             borderBottomWidth: 3,
             borderBottomStyle: "solid",
-            ...centered,
+            ...spacedRow,
           }}
         >
-          <h3> {title} </h3>
+          <div style={centeredRow}>
+            {icon && <img src={icon} style={{ height: 40, width: 40 }} />}
+            <h3 style={{ marginLeft: 16 }}> {title} </h3>
+          </div>
+
+          <div style={{ ...centeredRow, marginRight: 16 }}>
+            <TbPlayerPlay color="green" />
+            <div style={{ width: 10 }}></div>
+            <TbPlugConnected color="green" />
+          </div>
         </div>
 
-        <div style={{ flex: 1, overflow: "scroll", marginBottom: 3 }}>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            overflow: "scroll",
+            marginBottom: 3,
+          }}
+        >
           {children}
         </div>
+
+        {footer ? footer : null}
       </div>
     </Rnd>
   );

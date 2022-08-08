@@ -5,8 +5,9 @@ import "./DynamoWatcher.css";
 import { dateToLogStr } from "../../services/DateService";
 import { AwsComponent } from "../../domain/core";
 import BaseComponent, { BaseComponentProps } from "../layout/BaseComponent";
-
-import { centeredRow } from "../../utils/layoutUtils";
+import { centered, topAlignedRow } from "../../utils/layoutUtils";
+import TextContent from "@cloudscape-design/components/text-content";
+import SpaceBetween from "@cloudscape-design/components/space-between";
 
 export type DynamoWatcherComponent = {
   tableName: string;
@@ -22,16 +23,35 @@ export interface DynamoWatcherProps extends BaseComponentProps {
 const toSentenceCase = (str: string) => {
   return `${str[0]}${str.substring(1, str.length).toLowerCase()}`;
 };
-export default ({ state, dispatch }: DynamoWatcherProps) => {
+
+const diff = (o1: any, o2: any) =>
+  Object.keys(o2).reduce((diff, key) => {
+    if (o1[key] === o2[key]) return diff;
+    return {
+      ...diff,
+      [key]: o2[key],
+    };
+  }, {});
+
+export default (props: DynamoWatcherProps) => {
   const idGen = (i: number) =>
-    `${state.component.props.tableName}-${state.component.config.accountId}-${i}`;
+    `${props.state.component.props.tableName}-${props.state.component.config.accountId}-${i}`;
+
+  const noRecords = props.state.records.length === 0;
+
   return (
     <BaseComponent
-      state={{ ...state, title: state.component.props.tableName }}
-      dispatch={dispatch}
+      {...props}
+      state={{ ...props.state, title: props.state.component.props.tableName }}
     >
-      <div style={{ paddingTop: 0, flex: 1 }}>
-        {state.records.map((r, i) => {
+      <div style={{ paddingTop: 0, flex: 1, ...(noRecords ? centered : {}) }}>
+        {noRecords && (
+          <TextContent>
+            <p>Watchiing table, no activity detected yet...</p>
+          </TextContent>
+        )}
+
+        {props.state.records.map((r, i) => {
           return (
             <div
               key={idGen(i)}
@@ -44,20 +64,28 @@ export default ({ state, dispatch }: DynamoWatcherProps) => {
                 borderBottomWidth: 1,
                 borderStyle: "dotted",
                 borderColor: "lightgray",
-                ...centeredRow,
+                ...topAlignedRow,
               }}
             >
-              <p style={{ color: "gray" }}>{dateToLogStr(r.at)}</p>
-              <p style={{ width: 70, paddingLeft: 20 }}>
-                {toSentenceCase(r.type)}
-              </p>
+              <div style={{ minWidth: 160 }}>
+                <TextContent>
+                  <SpaceBetween direction="horizontal" size="xs">
+                    <p style={{ color: "gray" }}>{dateToLogStr(r.at)}</p>
+                    <p style={{ width: 70, paddingLeft: 20 }}>
+                      {toSentenceCase(r.type)}
+                    </p>
+                  </SpaceBetween>
+                </TextContent>
+              </div>
 
               <Inspector
-                // theme="chromeDark"
                 theme="chromeLight"
                 table={false}
-                data={{ a: 3 }}
-                columns={["a"]}
+                data={
+                  r.type === "MODIFY" && r.oldImage && r.newImage
+                    ? { ...r.key, ...(diff(r.oldImage, r.newImage) || {}) }
+                    : r.newImage || r.key
+                }
               />
             </div>
           );

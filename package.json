@@ -1,6 +1,6 @@
 {
   "name": "brianfoody-s3o-components",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -27,7 +27,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c --context window",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

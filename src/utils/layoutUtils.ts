@@ -13,6 +13,13 @@ export const centeredRow: React.CSSProperties = {
   justifyContent: "flex-start",
 };
 
+export const topAlignedRow: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "flex-start",
+  justifyContent: "flex-start",
+};
+
 export const spacedRow: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",

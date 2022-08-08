@@ -26,6 +26,7 @@ export interface BaseComponentProps {
   };
   dispatch: {
     authorise: () => Promise<void>;
+    togglePlay: () => Promise<void>;
   };
   children: React.ReactNode;
 }
@@ -86,8 +87,8 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
             <Icons
               status={status}
               component={c}
-              togglePlay={async () => console.log("TOGGLE")}
-              authorise={async () => console.log("AUTHORISE")}
+              togglePlay={dispatch.togglePlay}
+              authorise={dispatch.authorise}
             />
           </div>
         </div>
@@ -118,11 +119,15 @@ const Icons = (props: {
   return (
     <div style={{ ...centeredRow, marginRight: 16 }}>
       <InformationIcon {...props} />
+
       <div style={{ width: 10 }}></div>
+
       <PlayAuthoriseWrapper status={props.status} authorise={props.authorise}>
         <PlayIcon {...props} />
       </PlayAuthoriseWrapper>
+
       <div style={{ width: 10 }}></div>
+
       <ConnectionIcon status={props.status} authorise={props.authorise} />
     </div>
   );

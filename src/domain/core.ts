@@ -6,6 +6,7 @@ export interface ComponentStatus {
 export interface Component {
   id: string;
   type: "dynamoDbWatcher" | "lambdaWatcher" | "box";
+  name: "DynamoDB stream poller" | "Lambda monitor" | "Box";
   location: number[];
   size: number[];
   lastLocation: number[];

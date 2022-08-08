@@ -3,10 +3,6 @@
   src: url("./fonts/CaveatBrush-Regular.ttf");
 }
 
-h1,
-h2,
-h3,
-h4,
-p {
+.brand {
   font-family: "Caveat Brush";
 }

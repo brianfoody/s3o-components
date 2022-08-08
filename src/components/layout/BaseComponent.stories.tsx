@@ -5,6 +5,7 @@ import { Response } from "easy-aws-utils";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
 import { baseAwsComponent, baseComponent } from "../../utils/storyUtils";
 import { centered } from "../../utils/layoutUtils";
+import { AwsComponent } from "../../domain/core";
 
 export default {
   title: "components/layout/BaseComponent",
@@ -34,6 +35,7 @@ const Template: Story<BaseComponentProps> = (args) => (
 );
 
 // Reuse that template for creating different stories
+
 export const AuthorisedAndPlaying = Template.bind({});
 AuthorisedAndPlaying.args = {
   ...baseComponentProps,
@@ -64,4 +66,18 @@ UnauthorisedAndPaused.args = {
     authorisation: "expired",
     playing: false,
   },
+};
+
+export const AwsComponentShowingInformation = Template.bind({});
+AwsComponentShowingInformation.args = {
+  ...baseComponentProps,
+  component: {
+    ...baseComponentProps.component,
+    name: "DynamoDB stream poller",
+    config: {
+      accountId: "123456789",
+      region: "us-east-1",
+      permissionSet: "DeveloperAccess",
+    },
+  } as AwsComponent<any>,
 };

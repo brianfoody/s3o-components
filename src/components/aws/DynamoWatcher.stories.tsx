@@ -6,7 +6,7 @@ import DynamoWatcher, {
   DynamoWatcherComponent,
   DynamoWatcherProps,
 } from "./DynamoWatcher";
-import { baseAwsComponent } from "../../utils/storyUtils";
+import { allGoodStatus, baseAwsComponent } from "../../utils/storyUtils";
 
 export default {
   title: "components/aws/DynamoWatcher",
@@ -35,6 +35,7 @@ NoRecords.args = {
     ...baseComponent,
     size: [500, 300],
   },
+  status: allGoodStatus,
   records: [],
 };
 
@@ -44,6 +45,7 @@ NoRecordsLarge.args = {
     ...baseComponent,
     size: [900, 1200],
   },
+  status: allGoodStatus,
   records: [],
 };
 
@@ -52,6 +54,7 @@ RecordsKeyOnly.args = {
   component: {
     ...baseComponent,
   },
+  status: allGoodStatus,
   records: [
     {
       at: new Date(),
@@ -77,6 +80,7 @@ RecordsNewImage.args = {
   component: {
     ...baseComponent,
   },
+  status: allGoodStatus,
   records: [
     {
       at: new Date(),
@@ -114,6 +118,7 @@ RecordsNewAndOldImage.args = {
   component: {
     ...baseComponent,
   },
+  status: allGoodStatus,
   records: [
     {
       at: new Date(),
@@ -174,5 +179,6 @@ LotsOfRecords.args = {
   component: {
     ...baseComponent,
   },
+  status: allGoodStatus,
   records: lotsOfRecords,
 };

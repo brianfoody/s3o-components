@@ -23,9 +23,14 @@ export type DynamoWatcherProps = {
 const toSentenceCase = (str: string) => {
   return `${str[0]}${str.substring(1, str.length).toLowerCase()}`;
 };
-export default ({ component: c, records }: DynamoWatcherProps) => {
+export default ({ component: c, records, status }: DynamoWatcherProps) => {
   return (
-    <BaseAwsComponent title={c.props.tableName} component={c} icon={dynamoIcon}>
+    <BaseAwsComponent
+      title={c.props.tableName}
+      component={c}
+      icon={dynamoIcon}
+      status={status}
+    >
       <div style={{ paddingTop: 0, flex: 1 }}>
         {records.map((r, i) => {
           return (

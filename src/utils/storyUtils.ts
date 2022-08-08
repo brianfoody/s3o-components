@@ -1,4 +1,9 @@
-import { AwsComponent, Component } from "../domain/core";
+import { AwsComponent, Component, ComponentStatus } from "../domain/core";
+
+export const allGoodStatus: ComponentStatus = {
+  authorisation: "authorized",
+  playing: true,
+};
 
 export const baseComponent: Component = {
   id: "base-component",

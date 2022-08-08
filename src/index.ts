@@ -1,3 +1,3 @@
-import { Button } from "./components/Button";
+import DynamoWatcher from "./components/aws/DynamoWatcher";
 
-export { Button };
+export { DynamoWatcher };

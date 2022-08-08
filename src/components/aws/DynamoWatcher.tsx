@@ -3,39 +3,38 @@ import { Response } from "easy-aws-utils";
 import { Inspector } from "react-inspector";
 import "./DynamoWatcher.css";
 import { dateToLogStr } from "../../services/DateService";
-import { AwsComponent, ComponentStatus } from "../../domain/core";
-import BaseAwsComponent from "../layout/BaseAwsComponent";
-// @ts-ignore
-// import lambdaIcon from "aws-svg-icons/lib/Architecture-Service-Icons_07302021/Arch_Compute/64/Arch_AWS-Lambda_64.svg";
-import dynamoIcon from "aws-svg-icons/lib/Architecture-Service-Icons_07302021/Arch_Database/64/Arch_Amazon-DynamoDB_64.svg";
+import { AwsComponent } from "../../domain/core";
+import BaseComponent, { BaseComponentProps } from "../layout/BaseComponent";
+
 import { centeredRow } from "../../utils/layoutUtils";
 
-export type DynamoWatcherComponent = AwsComponent<{
+export type DynamoWatcherComponent = {
   tableName: string;
-}>;
-
-export type DynamoWatcherProps = {
-  records: Response[];
-  component: DynamoWatcherComponent;
-  status: ComponentStatus;
 };
+
+export interface DynamoWatcherProps extends BaseComponentProps {
+  state: BaseComponentProps["state"] & {
+    records: Response[];
+    component: AwsComponent<DynamoWatcherComponent>;
+  };
+}
 
 const toSentenceCase = (str: string) => {
   return `${str[0]}${str.substring(1, str.length).toLowerCase()}`;
 };
-export default ({ component: c, records, status }: DynamoWatcherProps) => {
+export default ({ state, dispatch }: DynamoWatcherProps) => {
+  const idGen = (i: number) =>
+    `${state.component.props.tableName}-${state.component.config.accountId}-${i}`;
   return (
-    <BaseAwsComponent
-      title={c.props.tableName}
-      component={c}
-      icon={dynamoIcon}
-      status={status}
+    <BaseComponent
+      state={{ ...state, title: state.component.props.tableName }}
+      dispatch={dispatch}
     >
       <div style={{ paddingTop: 0, flex: 1 }}>
-        {records.map((r, i) => {
+        {state.records.map((r, i) => {
           return (
             <div
-              key={`${c.props.tableName}-${c.config.accountId}-${i}`}
+              key={idGen(i)}
               style={{
                 padding: 8,
                 flexDirection: "row",
@@ -64,6 +63,6 @@ export default ({ component: c, records, status }: DynamoWatcherProps) => {
           );
         })}
       </div>
-    </BaseAwsComponent>
+    </BaseComponent>
   );
 };

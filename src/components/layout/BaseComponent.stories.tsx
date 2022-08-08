@@ -1,9 +1,8 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
-import { Response } from "easy-aws-utils";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
-import { baseAwsComponent, baseComponent } from "../../utils/storyUtils";
+import { baseComponent } from "../../utils/storyUtils";
 import { centered } from "../../utils/layoutUtils";
 import { AwsComponent } from "../../domain/core";
 
@@ -16,17 +15,20 @@ export default {
 } as Meta;
 
 const baseComponentProps: BaseComponentProps = {
-  component: baseComponent,
-  title: "Title",
+  state: {
+    component: baseComponent,
+    title: "Title",
+    status: {
+      playing: true,
+      authorisation: "authorized",
+    },
+  },
+  dispatch: {},
   children: (
     <div style={{ flex: 1, ...centered }}>
       <p>Child component</p>
     </div>
   ),
-  status: {
-    playing: true,
-    authorisation: "authorized",
-  },
 };
 
 // Create a master template for mapping args to render the DynamoWatcher component
@@ -44,40 +46,52 @@ AuthorisedAndPlaying.args = {
 export const AuthorisedAndPaused = Template.bind({});
 AuthorisedAndPaused.args = {
   ...baseComponentProps,
-  status: {
-    authorisation: "authorized",
-    playing: false,
+  state: {
+    ...baseComponentProps.state,
+    status: {
+      authorisation: "authorized",
+      playing: false,
+    },
   },
 };
 
 export const UnauthorisedAndPlaying = Template.bind({});
 UnauthorisedAndPlaying.args = {
   ...baseComponentProps,
-  status: {
-    authorisation: "expired",
-    playing: true,
+  state: {
+    ...baseComponentProps.state,
+    status: {
+      authorisation: "expired",
+      playing: true,
+    },
   },
 };
 
 export const UnauthorisedAndPaused = Template.bind({});
 UnauthorisedAndPaused.args = {
   ...baseComponentProps,
-  status: {
-    authorisation: "expired",
-    playing: false,
+  state: {
+    ...baseComponentProps.state,
+    status: {
+      authorisation: "expired",
+      playing: false,
+    },
   },
 };
 
 export const AwsComponentShowingInformation = Template.bind({});
 AwsComponentShowingInformation.args = {
   ...baseComponentProps,
-  component: {
-    ...baseComponentProps.component,
-    name: "DynamoDB stream poller",
-    config: {
-      accountId: "123456789",
-      region: "us-east-1",
-      permissionSet: "DeveloperAccess",
-    },
-  } as AwsComponent<any>,
+  state: {
+    ...baseComponentProps.state,
+    component: {
+      ...baseComponentProps.state.component,
+      name: "DynamoDB stream poller",
+      config: {
+        accountId: "123456789",
+        region: "us-east-1",
+        permissionSet: "DeveloperAccess",
+      },
+    } as AwsComponent<any>,
+  },
 };

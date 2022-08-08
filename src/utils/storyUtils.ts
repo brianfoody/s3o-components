@@ -7,7 +7,10 @@ export const allGoodStatus: ComponentStatus = {
 
 export const baseComponent: Component = {
   id: "base-component",
-  type: "box",
+  def: {
+    type: "box",
+    name: "Box",
+  },
   location: [0, 0],
   lastLocation: [0, 0],
   size: [500, 300],

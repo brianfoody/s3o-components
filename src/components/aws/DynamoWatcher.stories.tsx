@@ -5,7 +5,7 @@ import { Response } from "easy-aws-utils";
 import DynamoWatcher, { DynamoWatcherProps } from "./DynamoWatcher";
 import { allGoodStatus, baseAwsComponent } from "../../utils/storyUtils";
 import { centered } from "../../utils/layoutUtils";
-import { components } from "../../domain/core";
+import { components, DynamoWatcherComponent } from "../../domain/components";
 
 export default {
   title: "components/aws/DynamoWatcher",
@@ -19,7 +19,7 @@ const baseComponentProps: DynamoWatcherProps = {
   state: {
     component: {
       ...baseAwsComponent,
-      def: components.find((c) => c.type === "dynamoDbWatcher")!,
+      def: DynamoWatcherComponent,
       props: {
         tableName: "Users",
       },

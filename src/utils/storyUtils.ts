@@ -25,4 +25,5 @@ export const baseAwsComponent: AwsComponent<any> = {
     region: "us-east-1",
     permissionSet: "AdministratorAccess",
   },
+  props: {},
 };

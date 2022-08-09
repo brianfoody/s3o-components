@@ -35,6 +35,9 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
   const { component: c, status } = state;
 
   const icon = state.component.def.icon;
+
+  console.log("icon");
+  console.log(icon);
   return (
     <Rnd
       style={{
@@ -76,7 +79,12 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
           }}
         >
           <div style={centeredRow}>
-            {icon && <img src={icon} style={{ height: 40, width: 40 }} />}
+            {icon && (
+              <img
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
+                style={{ height: 40, width: 40 }}
+              />
+            )}
             <h3 className="brand" style={{ marginLeft: 8 }}>
               {" "}
               {state.title}{" "}

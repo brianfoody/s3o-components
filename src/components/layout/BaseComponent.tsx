@@ -36,8 +36,6 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
 
   const icon = state.component.def.icon;
 
-  console.log("icon");
-  console.log(icon);
   return (
     <Rnd
       style={{

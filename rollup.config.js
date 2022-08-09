@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
 import scss from "rollup-plugin-scss";
 import svg from "rollup-plugin-svg-import";
+import copy from "rollup-plugin-copy";
 
 const packageJson = require("./package.json");
 
@@ -30,6 +31,14 @@ export default {
     svg({
       // process SVG to DOM Node or String. Default: false
       stringify: true,
+    }),
+    copy({
+      targets: [
+        {
+          src: "src/fonts/CaveatBrush-Regular.ttf",
+          dest: "lib/fonts",
+        },
+      ],
     }),
   ],
 };

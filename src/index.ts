@@ -1,3 +1,3 @@
 import DynamoWatcher from "./components/aws/DynamoWatcher";
-
-export { DynamoWatcher };
+import * as Core from "./domain";
+export { Core, DynamoWatcher };

@@ -28,7 +28,7 @@ export interface BaseComponentProps {
     authorise: () => Promise<void>;
     togglePlay: () => Promise<void>;
   };
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default ({ state, dispatch, children }: BaseComponentProps) => {

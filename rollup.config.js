@@ -3,6 +3,7 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "rollup-plugin-typescript2";
 import scss from "rollup-plugin-scss";
+import svg from "rollup-plugin-svg-import";
 
 const packageJson = require("./package.json");
 
@@ -26,5 +27,9 @@ export default {
     commonjs(),
     typescript({ useTsconfigDeclarationDir: true }),
     scss(), // will output compiled styles to output.css
+    svg({
+      // process SVG to DOM Node or String. Default: false
+      stringify: false,
+    }),
   ],
 };

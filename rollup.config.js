@@ -29,7 +29,7 @@ export default {
     scss(), // will output compiled styles to output.css
     svg({
       // process SVG to DOM Node or String. Default: false
-      stringify: false,
+      stringify: true,
     }),
   ],
 };

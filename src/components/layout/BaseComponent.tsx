@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Rnd } from "react-rnd";
 import { AwsComponent, Component, ComponentStatus } from "../../domain/core";
 import {
@@ -23,18 +23,47 @@ export interface BaseComponentProps {
     component: Component;
     status: ComponentStatus;
     title: string;
+    scale?: number;
   };
   dispatch: {
-    authorise: () => Promise<void>;
-    togglePlay: () => Promise<void>;
+    onAuthorise: () => void;
+    onTogglePlay: () => void;
+    onResize: (size: number[]) => void;
+    onMove: (size: number[]) => void;
   };
   children?: React.ReactNode;
 }
 
 export default ({ state, dispatch, children }: BaseComponentProps) => {
+  const [location, setLocation] = React.useState<number[] | undefined>();
+  const [size, setSize] = React.useState<number[] | undefined>();
+
   const { component: c, status } = state;
 
   const icon = state.component.def.icon;
+
+  // We use the props to set the initial location and size but after that we ignore it and control
+  // it with internal state to avoid any jitter. The side effects are dispatched to update for next open.
+  useEffect(() => {
+    setLocation(state.component.location);
+    setSize(state.component.size);
+  }, []);
+
+  // Dispatch location side effect
+  useEffect(() => {
+    if (!location) return;
+
+    dispatch.onMove(location);
+  }, [location]);
+
+  // Dispatch resize side effect
+  useEffect(() => {
+    if (!size) return;
+
+    dispatch.onResize(size);
+  }, [size]);
+
+  if (!location || !size) return null;
 
   return (
     <Rnd
@@ -44,16 +73,15 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
         borderStyle: "solid",
         borderRadius: 5,
       }}
-      size={{ width: c.size[0], height: c.size[1] }}
-      position={{ x: c.location[0] | 0, y: c.location[1] | 0 }}
+      scale={state.scale || 1}
+      position={{ x: location[0], y: location[1] }}
+      size={{ width: size[0], height: size[1] }}
       onDragStop={(e, d) => {
-        console.log({ x: d.x, y: d.y });
+        setLocation([d.x, d.y]);
       }}
-      onResizeStop={(_e, _direction, ref, _delta) => {
-        console.log({
-          width: ref.style.width,
-          height: ref.style.height,
-        });
+      onResizeStop={(_e, _direction, ref, _delta, position) => {
+        setSize([parseFloat(ref.style.width), parseFloat(ref.style.height)]);
+        setLocation([position.x, position.y]);
       }}
       cancel=".componentBody"
       allowAnyClick={false}
@@ -93,8 +121,8 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
             <Icons
               status={status}
               component={c}
-              togglePlay={dispatch.togglePlay}
-              authorise={dispatch.authorise}
+              togglePlay={dispatch.onTogglePlay}
+              authorise={dispatch.onAuthorise}
             />
           </div>
         </div>

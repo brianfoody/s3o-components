@@ -47,7 +47,13 @@ export default (props: DynamoWatcherProps) => {
       <div style={{ paddingTop: 0, flex: 1, ...(noRecords ? centered : {}) }}>
         {noRecords && (
           <TextContent>
-            <p>Watchiing table, no activity detected yet...</p>
+            {props.state.status.authorisation === "expired" && (
+              <p>Authorisation has expired, refresh to view</p>
+            )}
+            {props.state.status.authorisation === "authorized" &&
+              !props.state.status.playing && <p>Paused</p>}
+            {props.state.status.authorisation === "authorized" &&
+              props.state.status.playing && <p>Listening for updates...</p>}
           </TextContent>
         )}
 

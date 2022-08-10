@@ -23,7 +23,12 @@ const baseComponentProps: BaseComponentProps = {
       authorisation: "authorized",
     },
   },
-  dispatch: {},
+  dispatch: {
+    onTogglePlay: () => console.log("TOGGLE"),
+    onAuthorise: () => console.log("AUTHORISE"),
+    onResize: (size) => console.log("RESIZE", size),
+    onMove: (size) => console.log("MOVE", size),
+  },
   children: (
     <div style={{ flex: 1, ...centered }}>
       <p>Child component</p>
@@ -76,6 +81,24 @@ UnauthorisedAndPaused.args = {
       authorisation: "expired",
       playing: false,
     },
+  },
+};
+
+export const MovesMoreOnAScaledOutCanvas = Template.bind({});
+MovesMoreOnAScaledOutCanvas.args = {
+  ...baseComponentProps,
+  state: {
+    ...baseComponentProps.state,
+    scale: 0.25,
+  },
+};
+
+export const MovesLessOnAScaledInCanvas = Template.bind({});
+MovesLessOnAScaledInCanvas.args = {
+  ...baseComponentProps,
+  state: {
+    ...baseComponentProps.state,
+    scale: 10,
   },
 };
 

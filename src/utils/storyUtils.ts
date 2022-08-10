@@ -1,8 +1,24 @@
+import { BaseComponentProps } from "../components/layout/BaseComponent";
 import { AwsComponent, Component, ComponentStatus } from "../domain/core";
 
 export const allGoodStatus: ComponentStatus = {
   authorisation: "authorized",
   playing: true,
+};
+
+export const allBadStatus: ComponentStatus = {
+  authorisation: "expired",
+  playing: false,
+};
+
+export const unauthorizedStatus: ComponentStatus = {
+  authorisation: "expired",
+  playing: true,
+};
+
+export const pausedStatus: ComponentStatus = {
+  authorisation: "authorized",
+  playing: false,
 };
 
 export const baseComponent: Component = {
@@ -26,4 +42,11 @@ export const baseAwsComponent: AwsComponent<any> = {
     permissionSet: "AdministratorAccess",
   },
   props: {},
+};
+
+export const baseDispatch: BaseComponentProps["dispatch"] = {
+  onTogglePlay: () => console.log("TOGGLE"),
+  onAuthorise: () => console.log("AUTHORISE"),
+  onResize: (size) => console.log("RESIZE", size),
+  onMove: (size) => console.log("MOVE", size),
 };

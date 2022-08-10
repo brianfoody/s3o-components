@@ -3,9 +3,16 @@ import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
 import { Response } from "easy-aws-utils";
 import DynamoWatcher, { DynamoWatcherProps } from "./DynamoWatcher";
-import { allGoodStatus, baseAwsComponent } from "../../utils/storyUtils";
+import {
+  allGoodStatus,
+  allBadStatus,
+  unauthorizedStatus,
+  pausedStatus,
+  baseAwsComponent,
+  baseDispatch,
+} from "../../utils/storyUtils";
 import { centered } from "../../utils/layoutUtils";
-import { components, DynamoWatcherComponent } from "../../domain/components";
+import { DynamoWatcherComponent } from "../../domain/components";
 
 export default {
   title: "components/aws/DynamoWatcher",
@@ -25,13 +32,10 @@ const baseComponentProps: DynamoWatcherProps = {
       },
     },
     title: "Title",
-    status: {
-      playing: true,
-      authorisation: "authorized",
-    },
+    status: allGoodStatus,
     records: [],
   },
-  dispatch: {},
+  dispatch: baseDispatch,
   children: (
     <div style={centered}>
       <p>Child component</p>
@@ -45,17 +49,24 @@ const Template: Story<DynamoWatcherProps> = (args) => (
 );
 
 // Reuse that template for creating different stories
-export const NoRecords = Template.bind({});
-NoRecords.args = {
+export const NoRecordsListening = Template.bind({});
+NoRecordsListening.args = {
+  ...baseComponentProps,
+};
+export const NoRecordsNotAuthorized = Template.bind({});
+NoRecordsNotAuthorized.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      size: [500, 300],
-    },
-    status: allGoodStatus,
-    records: [],
+    status: unauthorizedStatus,
+  },
+};
+export const NoRecordsPaused = Template.bind({});
+NoRecordsPaused.args = {
+  ...baseComponentProps,
+  state: {
+    ...baseComponentProps.state,
+    status: pausedStatus,
   },
 };
 

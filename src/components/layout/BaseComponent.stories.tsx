@@ -17,11 +17,7 @@ export default {
 const baseComponentProps: BaseComponentProps = {
   state: {
     component: baseComponent,
-    title: "Title",
-    status: {
-      playing: true,
-      authorisation: "authorized",
-    },
+    scale: 1,
   },
   dispatch: {
     onTogglePlay: () => console.log("TOGGLE"),
@@ -53,9 +49,12 @@ AuthorisedAndPaused.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: {
-      authorisation: "authorized",
-      playing: false,
+    component: {
+      ...baseComponentProps.state.component,
+      status: {
+        authorisation: "authorized",
+        playing: false,
+      },
     },
   },
 };
@@ -65,9 +64,12 @@ UnauthorisedAndPlaying.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: {
-      authorisation: "expired",
-      playing: true,
+    component: {
+      ...baseComponentProps.state.component,
+      status: {
+        authorisation: "expired",
+        playing: true,
+      },
     },
   },
 };
@@ -77,9 +79,12 @@ UnauthorisedAndPaused.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: {
-      authorisation: "expired",
-      playing: false,
+    component: {
+      ...baseComponentProps.state.component,
+      status: {
+        authorisation: "expired",
+        playing: false,
+      },
     },
   },
 };

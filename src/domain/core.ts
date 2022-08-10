@@ -14,9 +14,13 @@ export interface ComponentStatus {
 export interface Component {
   id: string;
   def: ElementType<typeof components>;
-  location: number[];
-  size: number[];
-  lastLocation: number[];
+  status: ComponentStatus;
+  title: string;
+  layout: {
+    location: number[];
+    size: number[];
+    lastLocation: number[];
+  };
   props?: any;
 }
 

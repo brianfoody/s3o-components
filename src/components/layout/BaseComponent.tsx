@@ -21,8 +21,6 @@ export const BASE_FOOTER_HGT = 20;
 export interface BaseComponentProps {
   state: {
     component: Component;
-    status: ComponentStatus;
-    title: string;
     scale?: number;
   };
   dispatch: {
@@ -38,15 +36,15 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
   const [location, setLocation] = React.useState<number[] | undefined>();
   const [size, setSize] = React.useState<number[] | undefined>();
 
-  const { component: c, status } = state;
+  const { component: c } = state;
 
   const icon = state.component.def.icon;
 
   // We use the props to set the initial location and size but after that we ignore it and control
   // it with internal state to avoid any jitter. The side effects are dispatched to update for next open.
   useEffect(() => {
-    setLocation(state.component.location);
-    setSize(state.component.size);
+    setLocation(c.layout.location);
+    setSize(c.layout.size);
   }, []);
 
   // Dispatch location side effect
@@ -113,13 +111,13 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
             )}
             <h3 className="brand" style={{ marginLeft: 8 }}>
               {" "}
-              {state.title}{" "}
+              {c.title}{" "}
             </h3>
           </div>
 
           <div style={{ ...centeredRow, marginRight: 8 }}>
             <Icons
-              status={status}
+              status={c.status}
               component={c}
               togglePlay={() => dispatch.onTogglePlay()}
               authorise={() => dispatch.onAuthorise()}

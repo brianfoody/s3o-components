@@ -27,9 +27,13 @@ export const baseComponent: Component = {
     type: "box",
     name: "Box",
   },
-  location: [0, 0],
-  lastLocation: [0, 0],
-  size: [500, 300],
+  status: allGoodStatus,
+  title: "Users",
+  layout: {
+    location: [0, 0],
+    lastLocation: [0, 0],
+    size: [500, 300],
+  },
   props: {},
 };
 

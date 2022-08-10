@@ -121,8 +121,8 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
             <Icons
               status={status}
               component={c}
-              togglePlay={dispatch.onTogglePlay}
-              authorise={dispatch.onAuthorise}
+              togglePlay={() => dispatch.onTogglePlay()}
+              authorise={() => dispatch.onAuthorise()}
             />
           </div>
         </div>
@@ -147,8 +147,8 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
 const Icons = (props: {
   status: ComponentStatus;
   component: Component;
-  togglePlay: () => Promise<void>;
-  authorise: () => Promise<void>;
+  togglePlay: () => void;
+  authorise: () => void;
 }) => {
   return (
     <div style={{ ...centeredRow, marginRight: 16 }}>
@@ -202,7 +202,7 @@ const PlayAuthoriseWrapper = ({
   children,
 }: {
   status: ComponentStatus;
-  authorise: () => Promise<void>;
+  authorise: () => void;
   children: React.ReactNode;
 }) => {
   if (status.authorisation === "authorized") return <>{children}</>;
@@ -232,7 +232,7 @@ const PlayIcon = ({
   togglePlay,
 }: {
   status: ComponentStatus;
-  togglePlay: () => Promise<void>;
+  togglePlay: () => void;
 }) => {
   if (status.playing && status.authorisation === "authorized") {
     return <TbPlayerPlay color="green" onClick={togglePlay} />;
@@ -249,7 +249,7 @@ const ConnectionIcon = ({
   authorise,
 }: {
   status: ComponentStatus;
-  authorise: () => Promise<void>;
+  authorise: () => void;
 }) => {
   if (status.authorisation === "authorized") {
     return (

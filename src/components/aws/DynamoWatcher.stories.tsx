@@ -30,9 +30,9 @@ const baseComponentProps: DynamoWatcherProps = {
       props: {
         tableName: "Users",
       },
+      title: "Title",
+      status: allGoodStatus,
     },
-    title: "Title",
-    status: allGoodStatus,
     records: [],
   },
   dispatch: baseDispatch,
@@ -58,7 +58,10 @@ NoRecordsNotAuthorized.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: unauthorizedStatus,
+    component: {
+      ...baseComponentProps.state.component,
+      status: unauthorizedStatus,
+    },
   },
 };
 export const NoRecordsPaused = Template.bind({});
@@ -66,7 +69,10 @@ NoRecordsPaused.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: pausedStatus,
+    component: {
+      ...baseComponentProps.state.component,
+      status: pausedStatus,
+    },
   },
 };
 
@@ -77,9 +83,12 @@ NoRecordsLarge.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      size: [900, 1200],
+      status: allGoodStatus,
+      layout: {
+        ...baseComponentProps.state.component.layout,
+        size: [900, 1200],
+      },
     },
-    status: allGoodStatus,
     records: [],
   },
 };
@@ -91,8 +100,8 @@ RecordsKeyOnly.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
+      status: allGoodStatus,
     },
-    status: allGoodStatus,
     records: [
       {
         at: new Date(),
@@ -119,7 +128,10 @@ RecordsNewImage.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: allGoodStatus,
+    component: {
+      ...baseComponentProps.state.component,
+      status: allGoodStatus,
+    },
     records: [
       {
         at: new Date(),
@@ -158,7 +170,10 @@ RecordsNewAndOldImage.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: allGoodStatus,
+    component: {
+      ...baseComponentProps.state.component,
+      status: allGoodStatus,
+    },
     records: [
       {
         at: new Date(),
@@ -220,7 +235,10 @@ LotsOfRecords.args = {
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
-    status: allGoodStatus,
+    component: {
+      ...baseComponentProps.state.component,
+      status: allGoodStatus,
+    },
     records: lotsOfRecords,
   },
 };

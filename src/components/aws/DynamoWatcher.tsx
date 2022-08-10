@@ -40,20 +40,19 @@ export default (props: DynamoWatcherProps) => {
   const noRecords = props.state.records.length === 0;
 
   return (
-    <BaseComponent
-      {...props}
-      state={{ ...props.state, title: props.state.component.props.tableName }}
-    >
+    <BaseComponent {...props} state={{ ...props.state }}>
       <div style={{ paddingTop: 0, flex: 1, ...(noRecords ? centered : {}) }}>
         {noRecords && (
           <TextContent>
-            {props.state.status.authorisation === "expired" && (
+            {props.state.component.status.authorisation === "expired" && (
               <p>Authorisation has expired, refresh to view</p>
             )}
-            {props.state.status.authorisation === "authorized" &&
-              !props.state.status.playing && <p>Paused</p>}
-            {props.state.status.authorisation === "authorized" &&
-              props.state.status.playing && <p>Listening for updates...</p>}
+            {props.state.component.status.authorisation === "authorized" &&
+              !props.state.component.status.playing && <p>Paused</p>}
+            {props.state.component.status.authorisation === "authorized" &&
+              props.state.component.status.playing && (
+                <p>Listening for updates...</p>
+              )}
           </TextContent>
         )}
 

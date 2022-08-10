@@ -31,8 +31,9 @@ const baseComponentProps: DynamoWatcherProps = {
         tableName: "Users",
       },
       title: "Title",
-      status: allGoodStatus,
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: [],
   },
   dispatch: baseDispatch,
@@ -60,8 +61,9 @@ NoRecordsNotAuthorized.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: unauthorizedStatus,
+      playing: unauthorizedStatus.playing,
     },
+    authorisation: unauthorizedStatus.authorisation,
   },
 };
 export const NoRecordsPaused = Template.bind({});
@@ -71,8 +73,9 @@ NoRecordsPaused.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: pausedStatus,
+      playing: pausedStatus.playing,
     },
+    authorisation: pausedStatus.authorisation,
   },
 };
 
@@ -83,12 +86,13 @@ NoRecordsLarge.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: allGoodStatus,
       layout: {
         ...baseComponentProps.state.component.layout,
         size: [900, 1200],
       },
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: [],
   },
 };
@@ -100,8 +104,9 @@ RecordsKeyOnly.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: allGoodStatus,
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: [
       {
         at: new Date(),
@@ -130,8 +135,9 @@ RecordsNewImage.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: allGoodStatus,
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: [
       {
         at: new Date(),
@@ -172,8 +178,9 @@ RecordsNewAndOldImage.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: allGoodStatus,
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: [
       {
         at: new Date(),
@@ -237,8 +244,9 @@ LotsOfRecords.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: allGoodStatus,
+      playing: allGoodStatus.playing,
     },
+    authorisation: allGoodStatus.authorisation,
     records: lotsOfRecords,
   },
 };

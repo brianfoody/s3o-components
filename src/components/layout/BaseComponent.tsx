@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Rnd } from "react-rnd";
-import { AwsComponent, Component, ComponentStatus } from "../../domain/core";
+import { AwsComponent, Component } from "../../domain/core";
 import {
   TbPlugConnected,
   TbPlugConnectedX,
@@ -18,9 +18,16 @@ import "../../base.css";
 export const BASE_TAB_HGT = 40;
 export const BASE_FOOTER_HGT = 20;
 
+export interface ComponentStatus {
+  authorisation: BaseComponentProps["state"]["authorisation"];
+  network?: BaseComponentProps["state"]["network"];
+  playing: Component["playing"];
+}
 export interface BaseComponentProps {
   state: {
     component: Component;
+    authorisation: "authorized" | "expired";
+    network?: "connected" | "disconnected";
     scale?: number;
   };
   dispatch: {
@@ -117,7 +124,11 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
 
           <div style={{ ...centeredRow, marginRight: 8 }}>
             <Icons
-              status={c.status}
+              status={{
+                authorisation: state.authorisation,
+                network: state.network,
+                playing: c.playing,
+              }}
               component={c}
               togglePlay={() => dispatch.onTogglePlay()}
               authorise={() => dispatch.onAuthorise()}

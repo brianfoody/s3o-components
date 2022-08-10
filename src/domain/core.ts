@@ -6,15 +6,10 @@ type ElementType<T extends ReadonlyArray<unknown>> = T extends ReadonlyArray<
   ? ElementType
   : never;
 
-export interface ComponentStatus {
-  playing: boolean;
-  authorisation: "authorized" | "expired";
-  network?: "connected" | "disconnected";
-}
 export interface Component {
   id: string;
   def: ElementType<typeof components>;
-  status: ComponentStatus;
+  playing: boolean;
   title: string;
   layout: {
     location: number[];

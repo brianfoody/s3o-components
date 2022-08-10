@@ -1,5 +1,8 @@
-import { BaseComponentProps } from "../components/layout/BaseComponent";
-import { AwsComponent, Component, ComponentStatus } from "../domain/core";
+import {
+  BaseComponentProps,
+  ComponentStatus,
+} from "../components/layout/BaseComponent";
+import { AwsComponent, Component } from "../domain/core";
 
 export const allGoodStatus: ComponentStatus = {
   authorisation: "authorized",
@@ -27,7 +30,7 @@ export const baseComponent: Component = {
     type: "box",
     name: "Box",
   },
-  status: allGoodStatus,
+  playing: allGoodStatus.playing,
   title: "Users",
   layout: {
     location: [0, 0],

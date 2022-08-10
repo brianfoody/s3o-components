@@ -2,7 +2,7 @@ import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
-import { baseComponent } from "../../utils/storyUtils";
+import { allGoodStatus, baseComponent } from "../../utils/storyUtils";
 import { centered } from "../../utils/layoutUtils";
 import { AwsComponent } from "../../domain/core";
 
@@ -17,6 +17,7 @@ export default {
 const baseComponentProps: BaseComponentProps = {
   state: {
     component: baseComponent,
+    authorisation: allGoodStatus.authorisation,
     scale: 1,
   },
   dispatch: {
@@ -51,11 +52,9 @@ AuthorisedAndPaused.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: {
-        authorisation: "authorized",
-        playing: false,
-      },
+      playing: false,
     },
+    authorisation: "authorized",
   },
 };
 
@@ -66,11 +65,9 @@ UnauthorisedAndPlaying.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: {
-        authorisation: "expired",
-        playing: true,
-      },
+      playing: true,
     },
+    authorisation: "expired",
   },
 };
 
@@ -81,11 +78,9 @@ UnauthorisedAndPaused.args = {
     ...baseComponentProps.state,
     component: {
       ...baseComponentProps.state.component,
-      status: {
-        authorisation: "expired",
-        playing: false,
-      },
+      playing: false,
     },
+    authorisation: "expired",
   },
 };
 

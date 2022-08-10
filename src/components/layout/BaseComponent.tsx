@@ -180,6 +180,7 @@ const InformationIcon = (props: {
       dismissButton={false}
       position="top"
       size="small"
+      renderWithPortal={true}
       triggerType="custom"
       content={
         <TextContent>
@@ -189,9 +190,9 @@ const InformationIcon = (props: {
         </TextContent>
       }
     >
-      <div style={{ marginTop: 6 }}>
+      <Pointer style={{ marginTop: 3 }}>
         <TbInfoCircle size={16} />
-      </div>
+      </Pointer>
     </Popover>
   );
 };
@@ -205,7 +206,8 @@ const PlayAuthoriseWrapper = ({
   authorise: () => void;
   children: React.ReactNode;
 }) => {
-  if (status.authorisation === "authorized") return <>{children}</>;
+  if (status.authorisation === "authorized")
+    return <Pointer>{children}</Pointer>;
 
   return (
     <Popover
@@ -213,6 +215,7 @@ const PlayAuthoriseWrapper = ({
       position="top"
       size="small"
       triggerType="custom"
+      renderWithPortal={true}
       content={
         <TextContent>
           Authorisation expired.
@@ -222,7 +225,7 @@ const PlayAuthoriseWrapper = ({
         </TextContent>
       }
     >
-      {children}
+      <Pointer>{children}</Pointer>
     </Popover>
   );
 };
@@ -258,11 +261,14 @@ const ConnectionIcon = ({
         position="top"
         size="small"
         triggerType="custom"
+        renderWithPortal={true}
         // TODO Authorised until {ssoExpiryTime}
         // content={<StatusIndicator type="success">Authorised</StatusIndicator>}
         content={<StatusIndicator type="success">Authorised</StatusIndicator>}
       >
-        <TbPlugConnected color="green" />
+        <Pointer>
+          <TbPlugConnected color="green" />
+        </Pointer>
       </Popover>
     );
   } else {
@@ -272,6 +278,7 @@ const ConnectionIcon = ({
         position="top"
         size="small"
         triggerType="custom"
+        renderWithPortal={true}
         content={
           <TextContent>
             Authorisation expired.
@@ -281,8 +288,27 @@ const ConnectionIcon = ({
           </TextContent>
         }
       >
-        <TbPlugConnectedX color="orange" />
+        <Pointer>
+          <TbPlugConnectedX color="orange" />
+        </Pointer>
       </Popover>
     );
   }
 };
+
+const Pointer = ({
+  children,
+  style,
+}: {
+  children: React.ReactNode;
+  style?: any;
+}) => (
+  <div
+    style={{
+      ...(style || {}),
+      cursor: "pointer",
+    }}
+  >
+    {children}
+  </div>
+);

@@ -80,7 +80,10 @@ export default <T, U>({
       }),
     []
   );
-  const [streamState, streamSend] = useMachine(streamMachine);
+  const [streamState, streamSend] = useMachine(streamMachine, {
+    // @ts-ignore
+    actions: {},
+  });
 
   const { component: c } = state;
 

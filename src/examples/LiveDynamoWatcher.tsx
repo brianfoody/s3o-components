@@ -5,7 +5,6 @@ import BaseComponent, {
 } from "../components/layout/BaseComponent";
 import DynamoWatcher, {
   DynamoWatcherComponent as DWC,
-  DynamoWatcherProps,
 } from "../components/aws/DynamoWatcher";
 import { DynamoRecord, DynamoWatcherModel } from "../components/aws/model";
 import { AwsComponent, DynamoWatcherComponent } from "../domain";

@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Rnd } from "react-rnd";
+import { useMachine } from "@xstate/react";
 import { AwsComponent, Component } from "../../domain/core";
 import {
   TbPlugConnected,
@@ -8,26 +9,43 @@ import {
   TbPlayerPause,
   TbInfoCircle,
 } from "react-icons/tb";
-import { centeredRow, spacedRow } from "../../utils/layoutUtils";
+import { centered, centeredRow, spacedRow } from "../../utils/layoutUtils";
 import Popover from "@cloudscape-design/components/popover";
 import Button from "@cloudscape-design/components/button";
 import TextContent from "@cloudscape-design/components/text-content";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
 import "../../base.css";
+import { createStreamMachine } from "../../machines/dataFetcherMachine";
+import DynamoWatcher from "../aws/DynamoWatcher";
+import ChildComponentWrapper from "./ChildComponentWrapper";
 
 export const BASE_TAB_HGT = 40;
 export const BASE_FOOTER_HGT = 20;
 
 export interface ComponentStatus {
-  authorisation: BaseComponentProps["state"]["authorisation"];
-  network?: BaseComponentProps["state"]["network"];
+  authorisation: BaseComponentProps<unknown, unknown>["state"]["authorisation"];
+  network?: BaseComponentProps<unknown, unknown>["state"]["network"];
   playing: Component["playing"];
 }
-export interface BaseComponentProps {
+
+export interface DataFetcher<T, U> {
+  delay: number;
+  initialData: T;
+  fetch: () => Promise<U>;
+  update: (current: T, update: U) => T;
+}
+
+export type AuthStatus = "authorized" | "expired";
+export type NetworkStatus = "connected" | "disconnected";
+
+export interface BaseComponentProps<T, U> {
+  ports: {
+    dataFetcher: DataFetcher<T, U>;
+  };
   state: {
     component: Component;
-    authorisation: "authorized" | "expired";
-    network?: "connected" | "disconnected";
+    authorisation: AuthStatus;
+    network?: NetworkStatus;
     scale?: number;
   };
   dispatch: {
@@ -36,12 +54,33 @@ export interface BaseComponentProps {
     onResize: (size: number[]) => void;
     onMove: (size: number[]) => void;
   };
-  children?: React.ReactNode;
+  ContentComponent?: typeof DynamoWatcher;
 }
 
-export default ({ state, dispatch, children }: BaseComponentProps) => {
+const DataContext = React.createContext<{ data: any }>({
+  data: undefined,
+});
+
+export default <T, U>({
+  ports,
+  state,
+  dispatch,
+  ContentComponent,
+}: BaseComponentProps<T, U>) => {
   const [location, setLocation] = React.useState<number[] | undefined>();
   const [size, setSize] = React.useState<number[] | undefined>();
+
+  // Create the machine to manage streaming data.
+  const streamMachine = useMemo(
+    () =>
+      createStreamMachine<T, U>({
+        dataFetcher: ports.dataFetcher,
+        authorisation: state.authorisation,
+        playing: state.component.playing,
+      }),
+    []
+  );
+  const [streamState, streamSend] = useMachine(streamMachine);
 
   const { component: c } = state;
 
@@ -68,7 +107,28 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
     dispatch.onResize(size);
   }, [size]);
 
+  useEffect(() => {
+    if (state.component.playing) {
+      streamSend("PLAYING");
+    } else {
+      streamSend("PAUSED");
+    }
+  }, [state.component.playing]);
+
+  useEffect(() => {
+    if (state.authorisation === "authorized") {
+      streamSend("AUTHORISED");
+    } else {
+      streamSend("EXPIRED");
+    }
+  }, [state.authorisation]);
+
   if (!location || !size) return null;
+
+  const hasData =
+    streamState.context.data instanceof Array
+      ? (streamState.context.data?.length || 0) > 0
+      : !!streamState.context.data;
 
   return (
     <Rnd
@@ -98,6 +158,7 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
           display: "flex",
           flexDirection: "column",
           overflow: "hidden",
+          background: "white",
         }}
       >
         <div
@@ -136,18 +197,13 @@ export default ({ state, dispatch, children }: BaseComponentProps) => {
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            overflow: "scroll",
-            marginBottom: 3,
-            cursor: "default",
-          }}
-          className="componentBody"
-        >
-          {children}
-        </div>
+        <ChildComponentWrapper>
+          {!hasData && <Placeholder state={state} />}
+
+          {hasData && ContentComponent && (
+            <ContentComponent data={streamState.context.data as any} />
+          )}
+        </ChildComponentWrapper>
       </div>
     </Rnd>
   );
@@ -247,12 +303,12 @@ const PlayIcon = ({
   togglePlay: () => void;
 }) => {
   if (status.playing && status.authorisation === "authorized") {
-    return <TbPlayerPlay color="green" onClick={togglePlay} />;
+    return <TbPlayerPause color="black" onClick={togglePlay} />;
   }
   if (status.playing && status.authorisation === "expired") {
-    return <TbPlayerPlay color="orange" onClick={togglePlay} />;
+    return <TbPlayerPause color="orange" onClick={togglePlay} />;
   } else {
-    return <TbPlayerPause color="black" onClick={togglePlay} />;
+    return <TbPlayerPlay color="green" onClick={togglePlay} />;
   }
 };
 
@@ -321,3 +377,19 @@ const Pointer = ({
     {children}
   </div>
 );
+
+const Placeholder = <T, U>(props: Pick<BaseComponentProps<T, U>, "state">) => {
+  return (
+    <div style={{ ...centered, flex: 1 }}>
+      <TextContent>
+        {props.state.authorisation === "expired" && (
+          <p>Authorisation has expired, refresh to view</p>
+        )}
+        {props.state.authorisation === "authorized" &&
+          !props.state.component.playing && <p>Paused</p>}
+        {props.state.authorisation === "authorized" &&
+          props.state.component.playing && <p>Listening for updates...</p>}
+      </TextContent>
+    </div>
+  );
+};

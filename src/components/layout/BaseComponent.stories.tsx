@@ -3,7 +3,6 @@ import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
 import { allGoodStatus, baseComponent } from "../../utils/storyUtils";
-import { centered } from "../../utils/layoutUtils";
 import { AwsComponent } from "../../domain/core";
 
 export default {
@@ -14,7 +13,15 @@ export default {
   },
 } as Meta;
 
-const baseComponentProps: BaseComponentProps = {
+const baseComponentProps: BaseComponentProps<number[], number> = {
+  ports: {
+    dataFetcher: {
+      delay: 500,
+      initialData: [],
+      update: (data, update) => [...data, update],
+      fetch: async () => Math.round(Math.random() * 100),
+    },
+  },
   state: {
     component: baseComponent,
     authorisation: allGoodStatus.authorisation,
@@ -26,15 +33,10 @@ const baseComponentProps: BaseComponentProps = {
     onResize: (size) => console.log("RESIZE", size),
     onMove: (size) => console.log("MOVE", size),
   },
-  children: (
-    <div style={{ flex: 1, ...centered }}>
-      <p>Child component</p>
-    </div>
-  ),
 };
 
 // Create a master template for mapping args to render the DynamoWatcher component
-const Template: Story<BaseComponentProps> = (args) => (
+const Template: Story<BaseComponentProps<number[], number>> = (args) => (
   <BaseComponent {...args} />
 );
 

@@ -1,6 +1,6 @@
 {
   "name": "brianfoody-s3o-components",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -47,6 +47,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "@xstate/react": "^3.0.1",
     "aws-svg-icons": "^3.0.0-2021-07-30",
     "date-fns": "^2.29.1",
     "easy-aws-utils": "^1.0.29",
@@ -54,6 +55,7 @@
     "react-inspector": "^6.0.1",
     "react-rnd": "^10.3.7",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xstate": "^4.33.0"
   }
 }

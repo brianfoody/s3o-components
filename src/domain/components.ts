@@ -4,6 +4,7 @@ interface ComponentDefinition {
   icon?: string;
 }
 
+// TODO Place these alongside each component and pull in dynamically
 export const DynamoWatcherComponent = {
   name: "DynamoDB stream poller",
   type: "dynamoDbWatcher",

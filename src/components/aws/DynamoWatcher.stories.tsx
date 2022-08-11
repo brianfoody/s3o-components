@@ -1,18 +1,9 @@
 import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
-import { Response } from "easy-aws-utils";
 import DynamoWatcher, { DynamoWatcherProps } from "./DynamoWatcher";
-import {
-  allGoodStatus,
-  allBadStatus,
-  unauthorizedStatus,
-  pausedStatus,
-  baseAwsComponent,
-  baseDispatch,
-} from "../../utils/storyUtils";
-import { centered } from "../../utils/layoutUtils";
-import { DynamoWatcherComponent } from "../../domain/components";
+import { DynamoRecord } from "./model";
+import ChildComponentWrapper from "../layout/ChildComponentWrapper";
 
 export default {
   title: "components/aws/DynamoWatcher",
@@ -22,206 +13,138 @@ export default {
   },
 } as Meta;
 
-const baseComponentProps: DynamoWatcherProps = {
-  state: {
-    component: {
-      ...baseAwsComponent,
-      def: DynamoWatcherComponent,
-      props: {
-        tableName: "Users",
-      },
-      title: "Title",
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: [],
-  },
-  dispatch: baseDispatch,
-  children: (
-    <div style={centered}>
-      <p>Child component</p>
-    </div>
-  ),
-};
+const id = () => Math.random() + "";
 
 // Create a master template for mapping args to render the DynamoWatcher component
 const Template: Story<DynamoWatcherProps> = (args) => (
-  <DynamoWatcher {...args} />
+  <div
+    style={{
+      width: 600,
+      height: 400,
+      borderRadius: 3,
+      borderWidth: 3,
+      borderStyle: "solid",
+      overflow: "scroll",
+    }}
+  >
+    <ChildComponentWrapper>
+      <DynamoWatcher {...args} />
+    </ChildComponentWrapper>
+  </div>
 );
 
 // Reuse that template for creating different stories
-export const NoRecordsListening = Template.bind({});
-NoRecordsListening.args = {
-  ...baseComponentProps,
-};
-export const NoRecordsNotAuthorized = Template.bind({});
-NoRecordsNotAuthorized.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: unauthorizedStatus.playing,
-    },
-    authorisation: unauthorizedStatus.authorisation,
-  },
-};
-export const NoRecordsPaused = Template.bind({});
-NoRecordsPaused.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: pausedStatus.playing,
-    },
-    authorisation: pausedStatus.authorisation,
-  },
-};
-
-export const NoRecordsLarge = Template.bind({});
-NoRecordsLarge.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      layout: {
-        ...baseComponentProps.state.component.layout,
-        size: [900, 1200],
-      },
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: [],
-  },
+export const NoRecords = Template.bind({});
+NoRecords.args = {
+  data: [],
 };
 
 export const RecordsKeyOnly = Template.bind({});
 RecordsKeyOnly.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: [
-      {
-        at: new Date(),
-        type: "INSERT",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
+  data: [
+    {
+      id: id(),
+      at: new Date(),
+      type: "INSERT",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
       },
-      {
-        at: new Date(),
-        type: "MODIFY",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
+    } as DynamoRecord,
+    {
+      id: id(),
+      at: new Date(),
+      type: "MODIFY",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
       },
-    ],
-  },
+    } as DynamoRecord,
+  ],
 };
 
 export const RecordsNewImage = Template.bind({});
 RecordsNewImage.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: [
-      {
-        at: new Date(),
-        type: "INSERT",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
-        newImage: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-          value1: "test abc",
-          value2: "test def",
-        },
+  data: [
+    {
+      id: id(),
+      at: new Date(),
+      type: "INSERT",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
       },
-      {
-        at: new Date(),
-        type: "MODIFY",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
-        newImage: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-          value1: "12345",
-          value2: "678910",
-        },
+      newImage: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+        value1: "test abc",
+        value2: "test def",
       },
-    ],
-  },
+    } as DynamoRecord,
+    {
+      id: id(),
+      at: new Date(),
+      type: "MODIFY",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+      },
+      newImage: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+        value1: "12345",
+        value2: "678910",
+      },
+    } as DynamoRecord,
+  ],
 };
 
 export const RecordsNewAndOldImage = Template.bind({});
 RecordsNewAndOldImage.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: [
-      {
-        at: new Date(),
-        type: "INSERT",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
-        newImage: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-          value1: "test abc",
-          value2: "test def",
-        },
+  data: [
+    {
+      id: id(),
+      at: new Date(),
+      type: "INSERT",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
       },
-      {
-        at: new Date(),
-        type: "MODIFY",
-        key: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-        },
-        newImage: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-          value1: "12345",
-          value2: "678910",
-        },
-        oldImage: {
-          id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
-          ts: +new Date(),
-          value1: "12345",
-        },
+      newImage: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+        value1: "test abc",
+        value2: "test def",
       },
-    ],
-  },
+    } as DynamoRecord,
+
+    {
+      id: id(),
+      at: new Date(),
+      type: "MODIFY",
+      key: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+      },
+      newImage: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+        value1: "12345",
+        value2: "678910",
+      },
+      oldImage: {
+        id: "e0db8e08-e089-42a8-a11e-8dc0c42024ac",
+        ts: +new Date(),
+        value1: "12345",
+      },
+    } as DynamoRecord,
+  ],
 };
 
-const lotsOfRecords: Response[] = [];
-for (let i = 0; i < 1000; i++) {
+const lotsOfRecords: DynamoRecord[] = [];
+for (let i = 0; i < 100; i++) {
   lotsOfRecords.push({
+    id: id(),
     at: new Date(),
     type: "INSERT",
     key: {
@@ -234,19 +157,10 @@ for (let i = 0; i < 1000; i++) {
       value1: "test abc",
       value2: "test def",
     },
-  } as Response);
+  } as DynamoRecord);
 }
 
 export const LotsOfRecords = Template.bind({});
 LotsOfRecords.args = {
-  ...baseComponentProps,
-  state: {
-    ...baseComponentProps.state,
-    component: {
-      ...baseComponentProps.state.component,
-      playing: allGoodStatus.playing,
-    },
-    authorisation: allGoodStatus.authorisation,
-    records: lotsOfRecords,
-  },
+  data: lotsOfRecords,
 };

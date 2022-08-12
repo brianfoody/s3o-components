@@ -224,7 +224,10 @@ const Icons = (props: {
   authorise: () => void;
 }) => {
   return (
-    <div style={{ ...centeredRow, marginRight: 16 }}>
+    <div
+      style={{ ...centeredRow, marginRight: 16 }}
+      onClick={(evt) => evt.stopPropagation()}
+    >
       <InformationIcon {...props} />
 
       <div style={{ width: 10 }}></div>

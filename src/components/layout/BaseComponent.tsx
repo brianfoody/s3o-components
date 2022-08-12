@@ -53,6 +53,7 @@ export interface BaseComponentProps<T, U> {
     onTogglePlay: () => void;
     onResize: (size: number[]) => void;
     onMove: (size: number[]) => void;
+    onSelection: (selected: boolean) => void;
   };
   ContentComponent?: typeof DynamoWatcher;
 }
@@ -136,7 +137,7 @@ export default <T, U>({
   return (
     <Rnd
       style={{
-        borderColor: "black",
+        borderColor: c.selected ? "#0972d3" : "black",
         borderWidth: 3,
         borderStyle: "solid",
         borderRadius: 5,
@@ -170,7 +171,11 @@ export default <T, U>({
             width: "100%",
             borderBottomWidth: 3,
             borderBottomStyle: "solid",
+            borderBottomColor: c.selected ? "#0972d3" : "black",
             ...spacedRow,
+          }}
+          onClick={() => {
+            dispatch.onSelection(!c.selected);
           }}
         >
           <div style={centeredRow}>
@@ -180,7 +185,7 @@ export default <T, U>({
                 style={{ height: 40, width: 40 }}
               />
             )}
-            <h3 className="brand" style={{ marginLeft: 8 }}>
+            <h3 className="brand" style={{ marginLeft: 8, color: "black" }}>
               {" "}
               {c.title}{" "}
             </h3>
@@ -259,7 +264,7 @@ const InformationIcon = (props: {
       }
     >
       <Pointer style={{ marginTop: 3 }}>
-        <TbInfoCircle size={16} />
+        <TbInfoCircle size={16} color="black" />
       </Pointer>
     </Popover>
   );
@@ -306,12 +311,12 @@ const PlayIcon = ({
   togglePlay: () => void;
 }) => {
   if (status.playing && status.authorisation === "authorized") {
-    return <TbPlayerPause color="black" onClick={togglePlay} />;
+    return <TbPlayerPause color="green" onClick={togglePlay} />;
   }
   if (status.playing && status.authorisation === "expired") {
     return <TbPlayerPause color="orange" onClick={togglePlay} />;
   } else {
-    return <TbPlayerPlay color="green" onClick={togglePlay} />;
+    return <TbPlayerPlay color="black" onClick={togglePlay} />;
   }
 };
 

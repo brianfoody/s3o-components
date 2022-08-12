@@ -31,6 +31,7 @@ export const baseComponent: Component = {
     name: "Box",
   },
   playing: allGoodStatus.playing,
+  selected: false,
   title: "Users",
   layout: {
     location: [0, 0],
@@ -51,7 +52,8 @@ export const baseAwsComponent: AwsComponent<any> = {
   props: {},
 };
 
-export const baseDispatch: BaseComponentProps["dispatch"] = {
+export const baseDispatch: BaseComponentProps<unknown, unknown>["dispatch"] = {
+  onSelection: (selected) => console.log(`selected ${selected}`),
   onTogglePlay: () => console.log("TOGGLE"),
   onAuthorise: () => console.log("AUTHORISE"),
   onResize: (size) => console.log("RESIZE", size),

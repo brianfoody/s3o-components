@@ -2,7 +2,11 @@ import React from "react";
 import { Meta } from "@storybook/react/types-6-0";
 import { Story } from "@storybook/react";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
-import { allGoodStatus, baseComponent } from "../../utils/storyUtils";
+import {
+  allGoodStatus,
+  baseComponent,
+  baseDispatch,
+} from "../../utils/storyUtils";
 import { AwsComponent } from "../../domain/core";
 
 export default {
@@ -27,12 +31,7 @@ const baseComponentProps: BaseComponentProps<number[], number> = {
     authorisation: allGoodStatus.authorisation,
     scale: 1,
   },
-  dispatch: {
-    onTogglePlay: () => console.log("TOGGLE"),
-    onAuthorise: () => console.log("AUTHORISE"),
-    onResize: (size) => console.log("RESIZE", size),
-    onMove: (size) => console.log("MOVE", size),
-  },
+  dispatch: baseDispatch,
 };
 
 // Create a master template for mapping args to render the DynamoWatcher component
@@ -83,6 +82,18 @@ UnauthorisedAndPaused.args = {
       playing: false,
     },
     authorisation: "expired",
+  },
+};
+
+export const Selected = Template.bind({});
+Selected.args = {
+  ...baseComponentProps,
+  state: {
+    ...baseComponentProps.state,
+    component: {
+      ...baseComponentProps.state.component,
+      selected: true,
+    },
   },
 };
 

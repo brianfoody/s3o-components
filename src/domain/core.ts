@@ -10,6 +10,7 @@ export interface Component {
   id: string;
   def: ElementType<typeof components>;
   playing: boolean;
+  selected: boolean;
   title: string;
   layout: {
     location: number[];

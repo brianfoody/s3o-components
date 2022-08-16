@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   BaseComponentProps,
   ComponentStatus,
@@ -32,7 +34,7 @@ export const baseComponent: Component = {
   },
   playing: allGoodStatus.playing,
   selected: false,
-  title: "Users",
+  title: "Feedback",
   layout: {
     location: [0, 0],
     lastLocation: [0, 0],
@@ -59,3 +61,7 @@ export const baseDispatch: BaseComponentProps<unknown, unknown>["dispatch"] = {
   onResize: (size) => console.log("RESIZE", size),
   onMove: (size) => console.log("MOVE", size),
 };
+
+export const BaseStory = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ padding: 20 }}>{children}</div>
+);

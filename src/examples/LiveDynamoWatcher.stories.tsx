@@ -1,6 +1,4 @@
 import React from "react";
-import { Meta } from "@storybook/react/types-6-0";
-import { Story } from "@storybook/react";
 import LiveDynamoWatcher from "./LiveDynamoWatcher";
 
 export default {
@@ -9,13 +7,14 @@ export default {
   argTypes: {
     backgroundColor: { control: "color" },
   },
-} as Meta;
-
-const id = () => Math.random() + "";
+};
 
 // Create a master template for mapping args to render the DynamoWatcher component
-const Template: Story = (args) => <LiveDynamoWatcher />;
+// const Template: Story = <LiveDynamoWatcher />;
 
-// Reuse that template for creating different stories
-export const DynamoWatcherExample = Template.bind({});
+// export const DynamoWatcherExample = Template.bind({});
+const DynamoWatcherExample = {
+  args: {},
+};
+
 DynamoWatcherExample.args = {};

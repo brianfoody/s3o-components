@@ -1,9 +1,8 @@
 import React from "react";
-import { Meta } from "@storybook/react/types-6-0";
-import { Story } from "@storybook/react";
 import DynamoWatcher, { DynamoWatcherProps } from "./DynamoWatcher";
 import { DynamoRecord } from "./model";
 import ChildComponentWrapper from "../layout/ChildComponentWrapper";
+import { id } from "../../utils/generalUtils";
 
 export default {
   title: "components/aws/DynamoWatcher",
@@ -11,36 +10,31 @@ export default {
   argTypes: {
     backgroundColor: { control: "color" },
   },
-} as Meta;
-
-const id = () => Math.random() + "";
-
-// Create a master template for mapping args to render the DynamoWatcher component
-const Template: Story<DynamoWatcherProps> = (args) => (
-  <div
-    style={{
-      width: 600,
-      height: 400,
-      borderRadius: 3,
-      borderWidth: 3,
-      borderStyle: "solid",
-      overflow: "scroll",
-    }}
-  >
-    <ChildComponentWrapper>
-      <DynamoWatcher {...args} />
-    </ChildComponentWrapper>
-  </div>
-);
-
-// Reuse that template for creating different stories
-export const NoRecords = Template.bind({});
-NoRecords.args = {
-  data: [],
 };
 
-export const RecordsKeyOnly = Template.bind({});
-RecordsKeyOnly.args = {
+// Create a master template for mapping args to render the DynamoWatcher component
+const Template = (args: DynamoWatcherProps) => () =>
+  (
+    <div
+      style={{
+        width: 600,
+        height: 400,
+        borderRadius: 3,
+        borderWidth: 3,
+        borderStyle: "solid",
+        overflow: "scroll",
+      }}
+    >
+      <ChildComponentWrapper>
+        <DynamoWatcher {...args} />
+      </ChildComponentWrapper>
+    </div>
+  );
+
+// Reuse that template for creating different stories
+export const NoRecords = Template({ data: [] });
+
+export const RecordsKeyOnly = Template({
   data: [
     {
       id: id(),
@@ -61,10 +55,9 @@ RecordsKeyOnly.args = {
       },
     } as DynamoRecord,
   ],
-};
+});
 
-export const RecordsNewImage = Template.bind({});
-RecordsNewImage.args = {
+export const RecordsNewImage = Template({
   data: [
     {
       id: id(),
@@ -97,10 +90,9 @@ RecordsNewImage.args = {
       },
     } as DynamoRecord,
   ],
-};
+});
 
-export const RecordsNewAndOldImage = Template.bind({});
-RecordsNewAndOldImage.args = {
+export const RecordsNewAndOldImage = Template({
   data: [
     {
       id: id(),
@@ -139,7 +131,7 @@ RecordsNewAndOldImage.args = {
       },
     } as DynamoRecord,
   ],
-};
+});
 
 const lotsOfRecords: DynamoRecord[] = [];
 for (let i = 0; i < 100; i++) {
@@ -160,7 +152,6 @@ for (let i = 0; i < 100; i++) {
   } as DynamoRecord);
 }
 
-export const LotsOfRecords = Template.bind({});
-LotsOfRecords.args = {
+export const LotsOfRecords = Template({
   data: lotsOfRecords,
-};
+});

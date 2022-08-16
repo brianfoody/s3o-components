@@ -55,12 +55,8 @@ export interface BaseComponentProps<T, U> {
     onMove: (size: number[]) => void;
     onSelection: (selected: boolean) => void;
   };
-  ContentComponent?: typeof DynamoWatcher;
+  ContentComponent?: (data: any) => JSX.Element;
 }
-
-const DataContext = React.createContext<{ data: any }>({
-  data: undefined,
-});
 
 export default <T, U>({
   ports,

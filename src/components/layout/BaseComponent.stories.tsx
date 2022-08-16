@@ -1,11 +1,10 @@
 import React from "react";
-import { Meta } from "@storybook/react/types-6-0";
-import { Story } from "@storybook/react";
 import BaseComponent, { BaseComponentProps } from "./BaseComponent";
 import {
   allGoodStatus,
   baseComponent,
   baseDispatch,
+  BaseStory,
 } from "../../utils/storyUtils";
 import { AwsComponent } from "../../domain/core";
 
@@ -15,7 +14,7 @@ export default {
   argTypes: {
     backgroundColor: { control: "color" },
   },
-} as Meta;
+};
 
 const baseComponentProps: BaseComponentProps<number[], number> = {
   ports: {
@@ -35,19 +34,17 @@ const baseComponentProps: BaseComponentProps<number[], number> = {
 };
 
 // Create a master template for mapping args to render the DynamoWatcher component
-const Template: Story<BaseComponentProps<number[], number>> = (args) => (
-  <BaseComponent {...args} />
-);
-
+const Template = (args: BaseComponentProps<number[], number>) => () =>
+  (
+    <BaseStory>
+      <BaseComponent {...args} />
+    </BaseStory>
+  );
 // Reuse that template for creating different stories
 
-export const AuthorisedAndPlaying = Template.bind({});
-AuthorisedAndPlaying.args = {
-  ...baseComponentProps,
-};
+export const AuthorisedAndPlaying = Template(baseComponentProps);
 
-export const AuthorisedAndPaused = Template.bind({});
-AuthorisedAndPaused.args = {
+export const AuthorisedAndPaused = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
@@ -57,10 +54,9 @@ AuthorisedAndPaused.args = {
     },
     authorisation: "authorized",
   },
-};
+});
 
-export const UnauthorisedAndPlaying = Template.bind({});
-UnauthorisedAndPlaying.args = {
+export const UnauthorisedAndPlaying = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
@@ -70,10 +66,9 @@ UnauthorisedAndPlaying.args = {
     },
     authorisation: "expired",
   },
-};
+});
 
-export const UnauthorisedAndPaused = Template.bind({});
-UnauthorisedAndPaused.args = {
+export const UnauthorisedAndPaused = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
@@ -83,10 +78,9 @@ UnauthorisedAndPaused.args = {
     },
     authorisation: "expired",
   },
-};
+});
 
-export const Selected = Template.bind({});
-Selected.args = {
+export const Selected = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
@@ -95,28 +89,25 @@ Selected.args = {
       selected: true,
     },
   },
-};
+});
 
-export const MovesMoreOnAScaledOutCanvas = Template.bind({});
-MovesMoreOnAScaledOutCanvas.args = {
+export const MovesMoreOnAScaledOutCanvas = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
     scale: 0.25,
   },
-};
+});
 
-export const MovesLessOnAScaledInCanvas = Template.bind({});
-MovesLessOnAScaledInCanvas.args = {
+export const MovesLessOnAScaledInCanvas = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
     scale: 10,
   },
-};
+});
 
-export const AwsComponentShowingInformation = Template.bind({});
-AwsComponentShowingInformation.args = {
+export const AwsComponentShowingInformation = Template({
   ...baseComponentProps,
   state: {
     ...baseComponentProps.state,
@@ -130,4 +121,4 @@ AwsComponentShowingInformation.args = {
       },
     } as AwsComponent<any>,
   },
-};
+});

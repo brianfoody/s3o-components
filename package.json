@@ -9,16 +9,9 @@
     "@babel/core": "^7.18.10",
     "@cloudscape-design/components": "^3.0.15",
     "@cloudscape-design/global-styles": "^1.0.1",
+    "@ladle/react": "^2.1.0",
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "@storybook/addon-actions": "^6.5.10",
-    "@storybook/addon-essentials": "^6.5.10",
-    "@storybook/addon-interactions": "^6.5.10",
-    "@storybook/addon-links": "^6.5.10",
-    "@storybook/builder-webpack5": "^6.5.10",
-    "@storybook/manager-webpack5": "^6.5.10",
-    "@storybook/react": "^6.5.10",
-    "@storybook/testing-library": "^0.0.13",
     "babel-loader": "^8.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -33,9 +26,8 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "build": "rollup -c --context window",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "ladle": "ladle serve",
+    "build": "rollup -c --context window"
   },
   "peerDependencies": {
     "@cloudscape-design/components": "^3.0.15",
@@ -49,6 +41,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@xstate/react": "^3.0.1",
     "aws-svg-icons": "^3.0.0-2021-07-30",
+    "cmdk": "^0.1.18",
     "date-fns": "^2.29.1",
     "easy-aws-utils": "^1.0.29",
     "react-icons": "^4.4.0",

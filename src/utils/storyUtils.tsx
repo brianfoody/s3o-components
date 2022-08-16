@@ -1,9 +1,11 @@
+import { Organisation } from "easy-aws-utils";
 import React from "react";
 
 import {
   BaseComponentProps,
   ComponentStatus,
 } from "../components/layout/BaseComponent";
+import { DynamoWatcherComponentDef } from "../domain";
 import { AwsComponent, Component } from "../domain/core";
 
 export const allGoodStatus: ComponentStatus = {
@@ -28,10 +30,7 @@ export const pausedStatus: ComponentStatus = {
 
 export const baseComponent: Component = {
   id: "base-component",
-  def: {
-    type: "box",
-    name: "Box",
-  },
+  def: DynamoWatcherComponentDef,
   playing: allGoodStatus.playing,
   selected: false,
   title: "Feedback",
@@ -65,3 +64,35 @@ export const baseDispatch: BaseComponentProps<unknown, unknown>["dispatch"] = {
 export const BaseStory = ({ children }: { children: React.ReactNode }) => (
   <div style={{ padding: 20 }}>{children}</div>
 );
+
+export const sampleOrgs: Organisation[] = [
+  {
+    ssoStartUrl: "https://d-90677e2e6d.awsapps.com/start",
+    ssoRegion: "us-east-1",
+    accounts: [
+      {
+        accountId: "532747402531",
+        defaultRegion: "us-east-1",
+        roles: ["AdministratorAccess"],
+      },
+      {
+        accountId: "431781111075",
+        defaultRegion: "us-east-1",
+        roles: ["AdministratorAccess"],
+      },
+    ],
+    roles: ["AdministratorAccess"],
+  },
+  {
+    ssoStartUrl: "https://d-97670d3191.awsapps.com/start#/",
+    ssoRegion: "ap-southeast-2",
+    accounts: [
+      {
+        accountId: "337387902522",
+        defaultRegion: "ap-southeast-2",
+        roles: ["AWSAdministratorAccess"],
+      },
+    ],
+    roles: ["AWSAdministratorAccess"],
+  },
+];

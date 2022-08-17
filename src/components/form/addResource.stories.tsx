@@ -1,7 +1,7 @@
 import React from "react";
 // import { Meta } from "@storybook/react/types-6-0";
 // import { Story } from "@storybook/react";
-import Command, { CommandProps } from "./command";
+import Command, { AddResourceProps } from "./addResource";
 import { sampleOrgs } from "../../utils/storyUtils";
 
 export default {
@@ -12,7 +12,7 @@ export default {
   },
 };
 
-const defaultProps: CommandProps = {
+const defaultProps: AddResourceProps = {
   organisations: sampleOrgs,
   dataFetcher: async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -21,10 +21,14 @@ const defaultProps: CommandProps = {
       value: `Table ${i}`,
     }));
   },
+  onAddComponent: (component) => {
+    console.log("Added a component");
+    console.log(component);
+  },
 };
 
 // Create a master template for mapping args to render the DynamoWatcher component
-const Template = (args: CommandProps) => () => <Command {...args} />;
+const Template = (args: AddResourceProps) => () => <Command {...args} />;
 
 // Reuse that template for creating different stories
-export const AuthorisedAndPlaying = Template(defaultProps);
+export const StandardResourceForm = Template(defaultProps);

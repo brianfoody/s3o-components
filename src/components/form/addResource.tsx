@@ -1,23 +1,24 @@
 import React from "react";
 import { Command } from "cmdk";
 import "../../base.css";
-import "./command.scss";
-import { components } from "../../domain";
+import "./addResource.scss";
+import { AwsComponent, components } from "../../domain";
 import { AccessCard, Account, AwsRegion, Organisation } from "easy-aws-utils";
 import { regions } from "../../domain/aws";
 
-type CustomData = { label: string; value: any };
+export type CustomData = { label: string; value: any };
 
-export type CommandProps = {
+export type AddResourceProps = {
   organisations: Organisation[];
   activeAccount?: Account;
   dataFetcher: (
     component: typeof components[number],
     access: AccessCard
   ) => Promise<CustomData[]>;
+  onAddComponent: (component: AwsComponent<any>) => void;
 };
 
-export default (props: CommandProps) => {
+export default (props: AddResourceProps) => {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [selectedValue, setSelectedValue] = React.useState<string>("");
@@ -47,7 +48,7 @@ export default (props: CommandProps) => {
 
   function bounce() {
     if (ref.current) {
-      ref.current.style.transform = "scale(0.96)";
+      ref.current.style.transform = "scale(0.99)";
       setTimeout(() => {
         if (ref.current) {
           ref.current.style.transform = "";
@@ -224,6 +225,23 @@ export default (props: CommandProps) => {
                   setData={(data) => {
                     setSelectedCustomData(data);
                     setInputValue("");
+
+                    const generatedResource = component!.generateComponent({
+                      title: data.label,
+                      config: {
+                        accountId: account?.accountId,
+                        permissionSet: permissionSet,
+                        region: region,
+                        ssoUrl: props.organisations.find((o) =>
+                          o.accounts.some(
+                            (a) => a.accountId === account?.accountId
+                          )
+                        )?.ssoStartUrl,
+                      },
+                      customData: data,
+                    });
+
+                    props.onAddComponent(generatedResource);
                   }}
                 />
               )}
@@ -265,7 +283,9 @@ const ExampleFrame = ({
 
         {components
           .filter((c) => c.name.toLowerCase() === selectedValue)
-          .map((c) => c.component(c.sampleData))}
+          .map((c) => {
+            return <div key={c.name}>{c.component(c.sampleData)}</div>;
+          })}
       </div>
     </div>
   );
@@ -320,12 +340,16 @@ function Accounts({
   return (
     <>
       {orgs.map((o) => (
-        <Command.Group heading={o.nickname || o.ssoStartUrl}>
+        <Command.Group
+          heading={o.nickname || o.ssoStartUrl}
+          key={o.ssoStartUrl}
+        >
           {o.accounts.map((a) => (
             <Item
               name={a.name || a.accountId}
               value={a}
               onSelect={() => setAccount(a)}
+              key-={a.accountId}
             />
           ))}
         </Command.Group>
@@ -337,9 +361,12 @@ function Accounts({
 function Regions({ setRegion }: { setRegion: (acc: string) => void }) {
   return (
     <Command.Group heading="Regions">
-      {regions.map((r) => (
-        <Item name={r} value={r} onSelect={() => setRegion(r)} key={r} />
-      ))}
+      {regions
+        .slice()
+        .sort((a, b) => a.localeCompare(b))
+        .map((r) => (
+          <Item name={r} value={r} onSelect={() => setRegion(r)} key={r} />
+        ))}
     </Command.Group>
   );
 }
@@ -355,9 +382,17 @@ function PermissionSets({
 
   return (
     <Command.Group heading="Permission sets">
-      {account.roles.map((r) => (
-        <Item name={r} value={r} onSelect={() => setPermissionSet(r)} key={r} />
-      ))}
+      {account.roles
+        .slice()
+        .sort((a, b) => a.localeCompare(b))
+        .map((r) => (
+          <Item
+            name={r}
+            value={r}
+            onSelect={() => setPermissionSet(r)}
+            key={r}
+          />
+        ))}
     </Command.Group>
   );
 }

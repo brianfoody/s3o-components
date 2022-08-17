@@ -67,6 +67,13 @@ export const BaseStory = ({ children }: { children: React.ReactNode }) => (
 
 export const sampleOrgs: Organisation[] = [
   {
+    accounts: [],
+    authorisedUntil: undefined,
+    roles: [],
+    ssoRegion: "us-east-1",
+    ssoStartUrl: "https://d-90677e2e99.awsapps.com/start#/",
+  },
+  {
     ssoStartUrl: "https://d-90677e2e6d.awsapps.com/start",
     ssoRegion: "us-east-1",
     accounts: [

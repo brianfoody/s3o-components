@@ -4,7 +4,7 @@ import React from "react";
 import {
   BaseComponentProps,
   ComponentStatus,
-} from "../components/layout/BaseComponent";
+} from "../components/layout/BaseComponent/BaseComponent";
 import { DynamoWatcherComponentDef } from "../domain";
 import { AwsComponent, Component } from "../domain/core";
 

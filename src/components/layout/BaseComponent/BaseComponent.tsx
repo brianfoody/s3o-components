@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { Rnd } from "react-rnd";
 import { useMachine } from "@xstate/react";
-import { AwsComponent, Component } from "../../domain/core";
+import { AwsComponent, Component } from "../../../domain/core";
 import {
   TbPlugConnected,
   TbPlugConnectedX,
@@ -9,14 +9,13 @@ import {
   TbPlayerPause,
   TbInfoCircle,
 } from "react-icons/tb";
-import { centered, centeredRow, spacedRow } from "../../utils/layoutUtils";
+import { centered, centeredRow, spacedRow } from "../../../utils/layoutUtils";
 import Popover from "@cloudscape-design/components/popover";
 import Button from "@cloudscape-design/components/button";
 import TextContent from "@cloudscape-design/components/text-content";
 import StatusIndicator from "@cloudscape-design/components/status-indicator";
-import "../../base.css";
-import { createStreamMachine } from "../../machines/dataFetcherMachine";
-import DynamoWatcher from "../aws/DynamoWatcher";
+import "../../../base.css";
+import { createStreamMachine } from "../../../machines/dataFetcherMachine";
 import ChildComponentWrapper from "./ChildComponentWrapper";
 
 export const BASE_TAB_HGT = 40;

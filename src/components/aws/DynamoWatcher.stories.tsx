@@ -1,7 +1,7 @@
 import React from "react";
 import DynamoWatcher, { DynamoWatcherProps } from "./DynamoWatcher";
 import { DynamoRecord } from "./model";
-import ChildComponentWrapper from "../layout/ChildComponentWrapper";
+import ChildComponentWrapper from "../layout/BaseComponent/ChildComponentWrapper";
 import { id } from "../../utils/generalUtils";
 
 export default {

@@ -5,8 +5,8 @@ import {
   baseComponent,
   baseDispatch,
   BaseStory,
-} from "../../utils/storyUtils";
-import { AwsComponent } from "../../domain/core";
+} from "../../../utils/storyUtils";
+import { AwsComponent } from "../../../domain/core";
 
 export default {
   title: "components/layout/BaseComponent",

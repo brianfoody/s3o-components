@@ -4,8 +4,10 @@ import {
   Alert,
   Button,
   ButtonDropdown,
+  ButtonDropdownProps,
   Header,
   Icon,
+  SpaceBetween,
   StatusIndicator,
   TextContent,
 } from "@cloudscape-design/components";
@@ -49,7 +51,7 @@ export default (props: SideMenuProps) => {
   return (
     <div
       style={{
-        width: expanded ? 450 : 60,
+        width: expanded ? 450 : 70,
         height: "100%",
         background: "white",
         borderRightWidth: 1,
@@ -57,6 +59,8 @@ export default (props: SideMenuProps) => {
         borderRightStyle: "solid",
         position: "relative",
       }}
+      id="side-menu-container"
+      className={expanded ? "" : "expanded"}
       // @ts-ignore
       ref={measuredRef}
     >
@@ -103,22 +107,18 @@ const LittleMenu = (props: SideMenuProps) => {
           const authorised =
             org.authorisedUntil && +org.authorisedUntil > +new Date();
           return (
-            <div
-              style={{
-                width: 40,
-                height: 40,
-                marginBottom: 20,
-                borderRadius: 8,
-                backgroundColor: authorised ? "#017f0b" : "#5f6b7a",
-                cursor: "pointer",
-                ...centered,
-              }}
-            >
-              <TextContent>
-                <h4 style={{ color: "white", cursor: "pointer" }}>
-                  {org.nickname ? org.nickname[0] : `#${i}`}
-                </h4>
-              </TextContent>
+            <div className={`tile ${authorised ? "authorised" : "expired"}`}>
+              <div className="tile-content">
+                <TextContent>
+                  <h4 style={{ color: "white", cursor: "pointer" }}>
+                    {org.nickname ? org.nickname[0] : `#${i}`}
+                  </h4>
+                </TextContent>
+              </div>
+
+              <div className="tile-content">
+                <OrgDropdown org={org} d={props["dispatch"]} small={true} />
+              </div>
             </div>
           );
         })}
@@ -138,21 +138,19 @@ const LittleMenu = (props: SideMenuProps) => {
         }}
       >
         <div
+          className="tile"
           style={{
-            width: 40,
-            height: 40,
-            marginBottom: 20,
-            borderRadius: 8,
-            backgroundColor: "white",
-            borderColor: "black",
-            borderWidth: 2,
             borderStyle: "solid",
-            cursor: "pointer",
+            borderWidth: 2,
+            backgroundColor: "white",
+            borderColor: "#0872d3",
             ...centered,
           }}
           onClick={props.dispatch.onAddOrg}
         >
-          +
+          <TextContent>
+            <h4 style={{ color: "#0872d3", cursor: "pointer" }}>+</h4>
+          </TextContent>
         </div>
       </div>
     </div>
@@ -232,29 +230,10 @@ const OrganisationMenu = ({ org, d }: { org: Organisation; d: Dispatch }) => {
   return (
     <div style={{ margin: "8px 0px" }} className="organisation">
       <TextContent>
-        <h5>
-          <ButtonDropdown
-            className="dropdown"
-            items={[
-              { text: "Delete", id: "del", disabled: false },
-              {
-                text: org.nickname ? "Edit nickname" : "Add nickname",
-                id: "add-nick",
-                disabled: false,
-              },
-            ]}
-            variant="icon"
-            onItemClick={async (evt) => {
-              if (evt.detail.id === "del") {
-                await d.onDeleteOrg(org);
-              } else if (evt.detail.id === "add-nick") {
-                await d.onRenameOrg(org);
-              }
-            }}
-          ></ButtonDropdown>
-
+        <h5 className="side-menu-org">
+          <OrgDropdown org={org} d={d} />
           <span
-            style={{ marginRight: 8, position: "relative", top: 5 }}
+            style={{ marginRight: 8 }}
             aria-open={open}
             onClick={() => setOpen(!open)}
           >
@@ -288,7 +267,13 @@ const OrganisationMenu = ({ org, d }: { org: Organisation; d: Dispatch }) => {
       </TextContent>
       <div style={{ paddingLeft: 32 }} className="account">
         {org.accounts.map((a) => (
-          <AccountMenu acc={a} key={a.accountId} display={open} d={d} />
+          <AccountMenu
+            org={org}
+            acc={a}
+            key={a.accountId}
+            display={open}
+            d={d}
+          />
         ))}
       </div>
     </div>
@@ -296,10 +281,12 @@ const OrganisationMenu = ({ org, d }: { org: Organisation; d: Dispatch }) => {
 };
 
 const AccountMenu = ({
+  org,
   acc,
   display,
   d,
 }: {
+  org: Organisation;
   acc: Account;
   display: boolean;
   d: Dispatch;
@@ -327,6 +314,7 @@ const AccountMenu = ({
         {acc.roles.map((r) => (
           <Role
             role={r}
+            org={org}
             acc={acc}
             display={open}
             key={`${acc.accountId}-${r}`}
@@ -339,23 +327,86 @@ const AccountMenu = ({
 
 const Role = ({
   role,
+  org,
   acc,
   display,
 }: {
   role: string;
+  org: Organisation;
   acc: Account;
   display: boolean;
 }) => {
-  const [open, setOpen] = React.useState(false);
-
   return (
     <div style={{ margin: "8px 0px", display: display ? "block" : "none" }}>
       <TextContent key={`${acc.accountId}-${role}`}>
         <p>
-          {role} (<a>Copy credentials</a>)
+          {role}{" "}
+          {org.authorisedUntil && +org.authorisedUntil > +new Date() && (
+            <SpaceBetween direction="horizontal" size="xs">
+              <a>Launch terminal</a>
+              <a>Launch browser</a>
+            </SpaceBetween>
+          )}
         </p>
       </TextContent>
     </div>
+  );
+};
+
+const OrgDropdown = ({
+  org,
+  d,
+  small,
+}: {
+  org: Organisation;
+  d: Dispatch;
+  small?: boolean;
+}) => {
+  const items: any[] = [
+    { text: "Delete", id: "del", disabled: false },
+    {
+      text: org.nickname ? "Edit nickname" : "Add nickname",
+      id: "add-nick",
+      disabled: false,
+    },
+  ];
+
+  // TODO Raise issue with button dropdown
+  if (small) {
+    items.push({
+      id: "accounts",
+      text: "Accounts",
+      items: org.accounts.map((acc) => ({
+        id: acc.accountId,
+        text: acc.name || acc.accountId,
+        items: [
+          {
+            id: acc.accountId + "|terminal",
+            text: "Launch terminal",
+          },
+          {
+            id: acc.accountId + "|browser",
+            text: "Launch browser  ",
+          },
+        ],
+      })),
+    });
+  }
+  return (
+    <ButtonDropdown
+      className="dropdown"
+      expandToViewport
+      items={items}
+      expandableGroups={!!small}
+      variant="icon"
+      onItemClick={async (evt) => {
+        if (evt.detail.id === "del") {
+          await d.onDeleteOrg(org);
+        } else if (evt.detail.id === "add-nick") {
+          await d.onRenameOrg(org);
+        }
+      }}
+    ></ButtonDropdown>
   );
 };
 

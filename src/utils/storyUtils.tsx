@@ -8,6 +8,8 @@ import {
 import { DynamoWatcherComponentDef } from "../domain";
 import { AwsComponent, Component } from "../domain/core";
 
+import "bulma/css/bulma.css";
+
 export const allGoodStatus: ComponentStatus = {
   authorisation: "authorized",
   playing: true,
@@ -71,31 +73,32 @@ export const sampleOrgs: Organisation[] = [
     authorisedUntil: undefined,
     roles: [],
     ssoRegion: "us-east-1",
-    ssoStartUrl: "https://d-90677e2e99.awsapps.com/start#/",
+    ssoStartUrl: "https://d-39372e2e99.awsapps.com/start#/",
   },
   {
-    ssoStartUrl: "https://d-90677e2e6d.awsapps.com/start",
+    ssoStartUrl: "https://d-39372e2e6d.awsapps.com/start",
     ssoRegion: "us-east-1",
     accounts: [
       {
-        accountId: "532747402531",
+        accountId: "5321234567890",
         defaultRegion: "us-east-1",
         roles: ["AdministratorAccess"],
       },
       {
-        accountId: "431781111075",
+        accountId: "4311234567890",
         defaultRegion: "us-east-1",
         roles: ["AdministratorAccess"],
       },
     ],
     roles: ["AdministratorAccess"],
+    authorisedUntil: new Date(+new Date() + 1000 * 1000),
   },
   {
-    ssoStartUrl: "https://d-97670d3191.awsapps.com/start#/",
+    ssoStartUrl: "https://d-39372jk2992.awsapps.com/start#/",
     ssoRegion: "ap-southeast-2",
     accounts: [
       {
-        accountId: "337387902522",
+        accountId: "331234567890",
         defaultRegion: "ap-southeast-2",
         roles: ["AWSAdministratorAccess"],
       },

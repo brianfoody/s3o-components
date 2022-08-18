@@ -1,6 +1,6 @@
 {
   "name": "brianfoody-s3o-components",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
@@ -41,6 +41,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@xstate/react": "^3.0.1",
     "aws-svg-icons": "^3.0.0-2021-07-30",
+    "bulma": "^0.9.4",
     "cmdk": "^0.1.18",
     "date-fns": "^2.29.1",
     "easy-aws-utils": "^1.0.29",

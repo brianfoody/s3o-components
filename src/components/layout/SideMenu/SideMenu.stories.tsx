@@ -1,6 +1,7 @@
 import React from "react";
-import { BaseStory, sampleOrgs } from "../../../utils/storyUtils";
+import { sampleOrgs } from "../../../utils/storyUtils";
 import SideMenu, { SideMenuProps } from "./SideMenu";
+import "bulma/css/bulma.css";
 
 export default {
   title: "components/layout/SideMenu",
@@ -13,12 +14,24 @@ export default {
 const defaultProps: SideMenuProps = {
   state: { organisations: sampleOrgs },
   dispatch: {
-    authorise: async (accessPair) => {},
-    grabCredentials: async (accessPair) => {},
-    onRenameOrg: async (organisation) => {},
-    onDeleteOrg: async (organisation) => {},
-    onAddOrg: async () => {},
-    onRenameAccount: async (organisation) => {},
+    authorise: async (accessPair) => {
+      window.alert("authorise");
+    },
+    grabCredentials: async (accessPair) => {
+      window.alert("grabCredentials");
+    },
+    onRenameOrg: async (organisation) => {
+      window.alert("onRenameOrg");
+    },
+    onDeleteOrg: async (organisation) => {
+      window.alert("onDeleteOrg");
+    },
+    onAddOrg: async () => {
+      window.alert("onAddOrg");
+    },
+    onRenameAccount: async (organisation) => {
+      window.alert("onRenameAccount");
+    },
   },
 };
 
@@ -27,10 +40,11 @@ const Template =
   (args: SideMenuProps, width: number | undefined = undefined) =>
   () =>
     (
-      <div style={{ maxWidth: width }}>
-        <BaseStory>
-          <SideMenu {...args} />
-        </BaseStory>
+      <div
+        className="template-wrapper"
+        style={{ maxWidth: width, height: "100%" }}
+      >
+        <SideMenu {...args} />
       </div>
     );
 // Reuse that template for creating different stories

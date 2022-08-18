@@ -4,7 +4,6 @@ import {
   Alert,
   Button,
   ButtonDropdown,
-  ButtonDropdownProps,
   Header,
   Icon,
   SpaceBetween,
@@ -18,10 +17,12 @@ import { centered } from "../../../utils/layoutUtils";
 export type SideMenuProps = {
   state: {
     organisations: Organisation[];
+    expanded: boolean;
   };
   dispatch: {
     authorise: (organisation: Organisation) => Promise<void>;
     grabCredentials: (accessPair: AccessPair) => Promise<void>;
+    onChangeExpanded: (expanded: boolean) => void;
     onRenameOrg: (organisation: Organisation) => Promise<void>;
     onDeleteOrg: (organisation: Organisation) => Promise<void>;
     onAddOrg: () => Promise<void>;
@@ -32,15 +33,7 @@ export type SideMenuProps = {
 type Dispatch = SideMenuProps["dispatch"];
 
 export default (props: SideMenuProps) => {
-  const [expanded, setExpanded] = React.useState(true);
   const [height, setHeight] = React.useState(0);
-
-  useEffect(() => {
-    const set = window.localStorage.getItem("AWS_EXPANDED");
-    if (!set) {
-      setExpanded(true);
-    }
-  }, []);
 
   const measuredRef = React.useCallback((node: HTMLElement) => {
     if (node !== null) {
@@ -51,7 +44,7 @@ export default (props: SideMenuProps) => {
   return (
     <div
       style={{
-        width: expanded ? 450 : 70,
+        width: props.state.expanded ? 450 : 60,
         height: "100%",
         background: "white",
         borderRightWidth: 1,
@@ -60,12 +53,12 @@ export default (props: SideMenuProps) => {
         position: "relative",
       }}
       id="side-menu-container"
-      className={expanded ? "" : "expanded"}
+      className={props.state.expanded ? "" : "expanded"}
       // @ts-ignore
       ref={measuredRef}
     >
-      {expanded && <ExpandedMenu {...props} />}
-      {!expanded && <LittleMenu {...props} />}
+      {props.state.expanded && <ExpandedMenu {...props} />}
+      {!props.state.expanded && <LittleMenu {...props} />}
 
       <div
         style={{
@@ -79,11 +72,13 @@ export default (props: SideMenuProps) => {
           cursor: "pointer",
           ...centered,
         }}
-        onClick={() => setExpanded(!expanded)}
+        onClick={() => props.dispatch.onChangeExpanded(!props.state.expanded)}
       >
         <Icon
           variant="inverted"
-          name={expanded ? "caret-left-filled" : "caret-right-filled"}
+          name={
+            props.state.expanded ? "caret-left-filled" : "caret-right-filled"
+          }
         />
       </div>
     </div>

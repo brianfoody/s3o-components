@@ -12,13 +12,16 @@ export default {
 };
 
 const defaultProps: SideMenuProps = {
-  state: { organisations: sampleOrgs },
+  state: { organisations: sampleOrgs, expanded: true },
   dispatch: {
     authorise: async (accessPair) => {
       window.alert("authorise");
     },
     grabCredentials: async (accessPair) => {
       window.alert("grabCredentials");
+    },
+    onChangeExpanded: async (expanded) => {
+      window.alert("onChangeExpanded");
     },
     onRenameOrg: async (organisation) => {
       window.alert("onRenameOrg");
@@ -50,5 +53,9 @@ const Template =
 // Reuse that template for creating different stories
 
 export const StandardMenu = Template(defaultProps);
+export const MinimisedStandardMenu = Template({
+  ...defaultProps,
+  state: { ...defaultProps.state, expanded: false },
+});
 
 export const StandardMenuAtWidth = Template(defaultProps, 400);

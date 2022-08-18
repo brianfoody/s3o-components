@@ -74,6 +74,8 @@ export default (props: AddResourceProps) => {
   };
 
   React.useEffect(() => {
+    if (!permissionSet) return;
+
     const fetchCustomData = async () => {
       try {
         if (!account || !permissionSet) {
@@ -97,7 +99,7 @@ export default (props: AddResourceProps) => {
     };
 
     fetchCustomData();
-  }, [permissionSet]);
+  }, [account?.accountId, region, permissionSet]);
 
   // // Toggle the menu when ⌘K is pressed
   // React.useEffect(() => {

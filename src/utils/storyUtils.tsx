@@ -73,6 +73,7 @@ export const sampleOrgs: Organisation[] = [
     authorisedUntil: undefined,
     roles: [],
     ssoRegion: "us-east-1",
+    defaultRegion: "eu-central-1",
     ssoStartUrl: "https://d-39372e2e99.awsapps.com/start#/",
   },
   {
@@ -90,6 +91,7 @@ export const sampleOrgs: Organisation[] = [
         roles: ["AdministratorAccess"],
       },
     ],
+    defaultRegion: "eu-central-1",
     roles: ["AdministratorAccess"],
     authorisedUntil: new Date(+new Date() + 1000 * 1000),
   },
@@ -103,6 +105,7 @@ export const sampleOrgs: Organisation[] = [
         roles: ["AWSAdministratorAccess"],
       },
     ],
+    defaultRegion: "ap-southeast-2",
     roles: ["AWSAdministratorAccess"],
   },
 ];

@@ -180,6 +180,9 @@
   [cmdk-framer-left] {
     width: 40%;
   }
+  [cmdk-framer-left].full {
+    width: 50%;
+  }
 
   [cmdk-framer-separator] {
     width: 1px;

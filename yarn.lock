@@ -5324,10 +5324,10 @@ eastasianwidth@^0.2.0:
   resolved "https://registry.yarnpkg.com/eastasianwidth/-/eastasianwidth-0.2.0.tgz#696ce2ec0aa0e6ea93a397ffcf24aa7840c827cb"
   integrity sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==
 
-easy-aws-utils@^1.0.29:
-  version "1.0.29"
-  resolved "https://registry.yarnpkg.com/easy-aws-utils/-/easy-aws-utils-1.0.29.tgz#8cf42882d422e9a47d4729f1bc382ea119d8a53a"
-  integrity sha512-EuZ2RoBjCu0lpGRJ61Rlv2VlOBE86TDcZqnFMFSRrtu+NogftOb/TVsv2JFdpzihvUOZuhoAwSp3PPSAXB77PQ==
+easy-aws-utils@^1.0.31:
+  version "1.0.31"
+  resolved "https://registry.yarnpkg.com/easy-aws-utils/-/easy-aws-utils-1.0.31.tgz#3284fd85ae7947be13997dba25f6489c628ec4b4"
+  integrity sha512-VZ4u3RHDqQC2bhojJ1U3yVLLLMqVi7SFp5cmBaVjlmQq9m348bxRw9HRmTe/R2jnMHvAg7SRW74wL8n/6RN8tA==
   dependencies:
     "@aws-sdk/client-dynamodb" "^3.44.0"
     "@aws-sdk/client-dynamodb-streams" "^3.137.0"

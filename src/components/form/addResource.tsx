@@ -27,6 +27,8 @@ export default (props: AddResourceProps) => {
     typeof components[number] | undefined
   >(undefined);
 
+  const [org, setOrg] = React.useState<Organisation | undefined>(undefined);
+
   const [account, setAccount] = React.useState<Account | undefined>(undefined);
 
   const [region, setRegion] = React.useState<string | undefined>(undefined);
@@ -43,8 +45,6 @@ export default (props: AddResourceProps) => {
   const [loadingCustomData, setLoadingCustomData] =
     React.useState<boolean>(true);
   // End ugly shit for custom data fetching
-
-  const [open, setOpen] = React.useState(true);
 
   function bounce() {
     if (ref.current) {
@@ -66,8 +66,10 @@ export default (props: AddResourceProps) => {
       return "Select a permission set";
     } else if (account) {
       return "Select a region";
-    } else if (component) {
+    } else if (org) {
       return "Select an account";
+    } else if (component) {
+      return "Select an organisation";
     } else {
       return "Find components for popular AWS Services...";
     }
@@ -101,18 +103,6 @@ export default (props: AddResourceProps) => {
     fetchCustomData();
   }, [account?.accountId, region, permissionSet]);
 
-  // // Toggle the menu when ⌘K is pressed
-  // React.useEffect(() => {
-  //   const down = (e: KeyboardEvent) => {
-  //     if (e.key === "k" && e.metaKey) {
-  //       setOpen((open) => !open);
-  //     }
-  //   };
-
-  //   document.addEventListener("keydown", down);
-  //   return () => document.removeEventListener("keydown", down);
-  // }, []);
-
   return (
     <div className="">
       <Command
@@ -140,6 +130,8 @@ export default (props: AddResourceProps) => {
               setRegion(undefined);
             } else if (account) {
               setAccount(undefined);
+            } else if (org) {
+              setOrg(undefined);
             } else if (component) {
               setComponent(undefined);
             }
@@ -150,6 +142,9 @@ export default (props: AddResourceProps) => {
         <div cmdk-vercel-badges="">
           <div cmdk-vercel-badge="">Home</div>
           {component && <div cmdk-vercel-badge="">{component.name}</div>}
+          {org && (
+            <div cmdk-vercel-badge="">{org.nickname || org.ssoStartUrl}</div>
+          )}
           {account && (
             <div cmdk-vercel-badge="">{account.name || account.accountId}</div>
           )}
@@ -171,7 +166,7 @@ export default (props: AddResourceProps) => {
 
         <Command.List>
           <div cmdk-framer-items="">
-            <div cmdk-framer-left="">
+            <div cmdk-framer-left="" className={component ? "full" : ""}>
               {!component && (
                 <Command.Group heading="Components">
                   {components
@@ -192,9 +187,21 @@ export default (props: AddResourceProps) => {
                 </Command.Group>
               )}
 
-              {component && !account && (
-                <Accounts
+              {component && !org && (
+                <Orgs
                   orgs={props.organisations}
+                  setOrg={(org) => {
+                    setOrg(org);
+                    setInputValue("");
+                  }}
+                />
+              )}
+
+              {org && !account && (
+                <Accounts
+                  orgs={props.organisations.filter(
+                    (o) => o.ssoStartUrl === org.ssoStartUrl
+                  )}
                   setAccount={(acc) => {
                     setAccount(acc);
                     setInputValue("");
@@ -204,6 +211,7 @@ export default (props: AddResourceProps) => {
 
               {account && !region && (
                 <Regions
+                  defaultRegion={org?.defaultRegion}
                   setRegion={(r) => {
                     setRegion(r);
                     setInputValue("");
@@ -332,6 +340,43 @@ function Item({
   );
 }
 
+function Orgs({
+  orgs,
+  setOrg,
+}: {
+  orgs: Organisation[];
+  setOrg: (org: Organisation) => void;
+}) {
+  return (
+    <Command.Group heading={"Organisations"}>
+      {orgs
+        .map((o) => ({
+          ...o,
+          disabled: !o.authorisedUntil || +o.authorisedUntil < +new Date(),
+          displayName: o.nickname || o.ssoStartUrl,
+        }))
+        .slice()
+        .sort((a, b) =>
+          a.disabled ? 10 : a.displayName.localeCompare(b.displayName)
+        )
+        .map((o) => {
+          return (
+            <Item
+              name={
+                `${o.nickname || o.ssoStartUrl}` +
+                (o.disabled ? ` (not authenticated)` : "")
+              }
+              value={o}
+              onSelect={() => setOrg(o)}
+              disabled={o.disabled}
+              key-={o.ssoStartUrl}
+            />
+          );
+        })}
+    </Command.Group>
+  );
+}
+
 function Accounts({
   orgs,
   setAccount,
@@ -360,12 +405,18 @@ function Accounts({
   );
 }
 
-function Regions({ setRegion }: { setRegion: (acc: string) => void }) {
+function Regions({
+  setRegion,
+  defaultRegion,
+}: {
+  setRegion: (acc: string) => void;
+  defaultRegion?: string;
+}) {
   return (
     <Command.Group heading="Regions">
       {regions
         .slice()
-        .sort((a, b) => a.localeCompare(b))
+        .sort((a, b) => (a === defaultRegion ? -10 : a.localeCompare(b)))
         .map((r) => (
           <Item name={r} value={r} onSelect={() => setRegion(r)} key={r} />
         ))}

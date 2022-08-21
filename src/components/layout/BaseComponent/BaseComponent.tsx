@@ -182,11 +182,16 @@ export default <T, U>({
           <div style={centeredRow}>
             {icon && (
               <img
+                className="noselect"
                 src={`data:image/svg+xml;utf8,${encodeURIComponent(icon)}`}
-                style={{ height: 40, width: 40 }}
+                onDragStart={() => false}
+                style={{ height: 40, width: 40, pointerEvents: "none" }}
               />
             )}
-            <h3 className="brand" style={{ marginLeft: 8, color: "black" }}>
+            <h3
+              className="brand noselect"
+              style={{ marginLeft: 8, color: "black" }}
+            >
               {" "}
               {c.title}{" "}
             </h3>

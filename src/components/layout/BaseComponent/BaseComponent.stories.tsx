@@ -26,7 +26,13 @@ export const dcp: BaseComponentProps<number[], number> = {
     },
   },
   state: {
-    component: baseComponent,
+    component: {
+      ...baseComponent,
+      layout: {
+        ...baseComponent.layout,
+        location: [0, 0],
+      },
+    },
     authorisation: allGoodStatus.authorisation,
     scale: 0.85,
   },

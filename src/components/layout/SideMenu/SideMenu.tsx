@@ -102,7 +102,10 @@ const LittleMenu = (props: SideMenuProps) => {
           const authorised =
             org.authorisedUntil && +org.authorisedUntil > +new Date();
           return (
-            <div className={`tile ${authorised ? "authorised" : "expired"}`}>
+            <div
+              className={`tile ${authorised ? "authorised" : "expired"}`}
+              key={org.ssoStartUrl}
+            >
               <div className="tile-content">
                 <TextContent>
                   <h4 style={{ color: "white", cursor: "pointer" }}>

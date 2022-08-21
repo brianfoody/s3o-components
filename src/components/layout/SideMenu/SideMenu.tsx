@@ -357,14 +357,27 @@ const OrgDropdown = ({
   d: Dispatch;
   small?: boolean;
 }) => {
-  const items: any[] = [
-    { text: "Delete", id: "del", disabled: false },
-    {
-      text: org.nickname ? "Edit nickname" : "Add nickname",
-      id: "add-nick",
+  const authorised = org.authorisedUntil && +org.authorisedUntil > +new Date();
+  const items: any[] = [];
+
+  if (!authorised) {
+    items.push({
+      text: "Authorise",
+      id: "auth",
       disabled: false,
-    },
-  ];
+    });
+  }
+
+  items.push(
+    ...[
+      { text: "Delete", id: "del", disabled: false },
+      {
+        text: org.nickname ? "Edit nickname" : "Add nickname",
+        id: "add-nick",
+        disabled: false,
+      },
+    ]
+  );
 
   // TODO Raise issue with button dropdown
   if (small) {
@@ -395,7 +408,9 @@ const OrgDropdown = ({
       expandableGroups={!!small}
       variant="icon"
       onItemClick={async (evt) => {
-        if (evt.detail.id === "del") {
+        if (evt.detail.id === "auth") {
+          await d.authorise(org);
+        } else if (evt.detail.id === "del") {
           await d.onDeleteOrg(org);
         } else if (evt.detail.id === "add-nick") {
           await d.onRenameOrg(org);

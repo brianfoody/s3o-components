@@ -37,7 +37,7 @@ export const baseComponent: Component = {
   selected: false,
   title: "Feedback",
   layout: {
-    location: [0, 0],
+    location: [51000, 50500],
     lastLocation: [0, 0],
     size: [500, 300],
   },

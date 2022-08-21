@@ -16,7 +16,7 @@ export default {
   },
 };
 
-const baseComponentProps: BaseComponentProps<number[], number> = {
+export const dcp: BaseComponentProps<number[], number> = {
   ports: {
     dataFetcher: {
       delay: 500,
@@ -28,7 +28,7 @@ const baseComponentProps: BaseComponentProps<number[], number> = {
   state: {
     component: baseComponent,
     authorisation: allGoodStatus.authorisation,
-    scale: 1,
+    scale: 0.85,
   },
   dispatch: baseDispatch,
 };
@@ -42,14 +42,14 @@ const Template = (args: BaseComponentProps<number[], number>) => () =>
   );
 // Reuse that template for creating different stories
 
-export const AuthorisedAndPlaying = Template(baseComponentProps);
+export const AuthorisedAndPlaying = Template(dcp);
 
 export const AuthorisedAndPaused = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     component: {
-      ...baseComponentProps.state.component,
+      ...dcp.state.component,
       playing: false,
     },
     authorisation: "authorized",
@@ -57,11 +57,11 @@ export const AuthorisedAndPaused = Template({
 });
 
 export const UnauthorisedAndPlaying = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     component: {
-      ...baseComponentProps.state.component,
+      ...dcp.state.component,
       playing: true,
     },
     authorisation: "expired",
@@ -69,11 +69,11 @@ export const UnauthorisedAndPlaying = Template({
 });
 
 export const UnauthorisedAndPaused = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     component: {
-      ...baseComponentProps.state.component,
+      ...dcp.state.component,
       playing: false,
     },
     authorisation: "expired",
@@ -81,38 +81,38 @@ export const UnauthorisedAndPaused = Template({
 });
 
 export const Selected = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     component: {
-      ...baseComponentProps.state.component,
+      ...dcp.state.component,
       selected: true,
     },
   },
 });
 
 export const MovesMoreOnAScaledOutCanvas = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     scale: 0.25,
   },
 });
 
 export const MovesLessOnAScaledInCanvas = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     scale: 10,
   },
 });
 
 export const AwsComponentShowingInformation = Template({
-  ...baseComponentProps,
+  ...dcp,
   state: {
-    ...baseComponentProps.state,
+    ...dcp.state,
     component: {
-      ...baseComponentProps.state.component,
+      ...dcp.state.component,
       name: "DynamoDB stream poller",
       config: {
         accountId: "123456789",

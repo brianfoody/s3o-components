@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, WheelEvent } from "react";
 import { Rnd } from "react-rnd";
 import { useMachine } from "@xstate/react";
 import { AwsComponent, Component } from "../../../domain/core";
@@ -122,6 +122,12 @@ export default <T, U>({
     }
   }, [state.authorisation]);
 
+  const ref = useCallback((div: HTMLDivElement) => {
+    div?.addEventListener("wheel", (event) => {
+      event.stopPropagation();
+    });
+  }, []);
+
   if (!location || !size) return null;
 
   const hasData =
@@ -200,7 +206,8 @@ export default <T, U>({
           </div>
         </div>
 
-        <ChildComponentWrapper>
+        {/* @ts-ignore */}
+        <ChildComponentWrapper ref={ref}>
           {!hasData && <Placeholder state={state} />}
 
           {hasData && ContentComponent && (
